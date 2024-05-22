@@ -1,0 +1,142 @@
+stages:
+  - build
+  - deploytest
+  - push
+
+# defind variable
+# $SERVER_DEV_USER
+# $SERVER_DEV_IP  Masked
+# $SSH_PRIVATE_KEY
+# $DOCKER_AUTH_CONFIG
+
+# use docker runner
+build image:
+  stage: build
+  image: mchregistry.mch.mfu.ac.th/docker-local:19.03.12
+  services:
+    - mchregistry.mch.mfu.ac.th/docker-local:19.03.12-dind
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+  script:
+    - tmpdate=$(date +%s)
+    - PIPELINE_REGISTRY_IMAGE="${CI_REGISTRY_IMAGE}:${tmpdate}"
+    # replace variables
+    - sed -i "s|DBHost|$DBHost|g" ./src/.env
+    - sed -i "s|DBUser|$DBUser|g" ./src/.env
+    - sed -i "s|DBPass|$DBPass|g" ./src/.env
+    - sed -i "s|DBName|$DBName|g" ./src/.env
+    - sed -i "s|BaseURL|$BaseURL|g" ./src/.env
+    # - sed -i "s|DBHost|$DBHost|g" ./src/app/config/database.php
+    # - sed -i "s|DBUser|$DBUser|g" ./src/app/config/database.php
+    # - sed -i "s|DBPass|$DBPass|g" ./src/app/config/database.php
+    # - sed -i "s|DBName|$DBName|g" ./src/app/config/database.php
+    # - sed -i "s|BaseURL|$BaseURL|g" ./src/app/config/config.php
+    # build image
+    - docker build -t $PIPELINE_REGISTRY_IMAGE .
+    - echo $PIPELINE_REGISTRY_IMAGE > docker_image.tmp
+  artifacts:
+    paths:
+      - docker_image.tmp
+
+
+deploytest:
+  image: mchregistry.mch.mfu.ac.th/testdeployer
+  stage: deploytest
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p 2297 $SERVER_DEV_IP >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - PIPELINE_REGISTRY_IMAGE=$(cat docker_image.tmp)
+    - echo "Starting to deploy"
+    - apk update && apk add openssh-client
+
+    # get old image and create artifacts
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && (kubectl get deployment/$CI_PROJECT_NAME -n dev -o jsonpath='{.spec.template.spec.containers[0].image}' > TMP_OLD_IMAGE.tmp) > /dev/null 2>&1 || echo no"
+    - TMP_OLD_IMAGE=$(ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cat TMP_OLD_IMAGE.tmp")
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && (ls $CI_PROJECT_NAME && rm -rf $CI_PROJECT_NAME) > /dev/null 2>&1 || echo no"
+    
+    # clone source code from gitlab
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && git clone --depth 1 --filter=blob:none --sparse $CI_REPOSITORY_URL && cd $CI_PROJECT_NAME && git sparse-checkout set k8s_yaml"
+
+    # edit my-application on yaml
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cd $CI_PROJECT_NAME && sed -i 's/my-application/${CI_PROJECT_NAME}/g' ./k8s_yaml/all.yaml"
+    
+    # edit nfs-claim on yaml
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cd $CI_PROJECT_NAME && sed -i 's/nfs-claim/${CI_PROJECT_NAME}/g' ./k8s_yaml/all.yaml"
+
+    # edit registry-url on yaml
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cd $CI_PROJECT_NAME && sed -i "s+registry-url+$PIPELINE_REGISTRY_IMAGE+g" ./k8s_yaml/all.yaml"
+
+    # Deployment
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cd $CI_PROJECT_NAME && kubectl get deployment -n dev | grep $CI_PROJECT_NAME > /dev/null 2>&1 || echo no && kubectl apply -f ./k8s_yaml/all.yaml"
+    
+    # Check application ip
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "echo 'IP Application is ' && kubectl get service/$CI_PROJECT_NAME -n dev -o jsonpath='{.status.loadBalancer.ingress[0].ip}' && echo ' '"
+
+    # remove old image
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "(docker image rm $TMP_OLD_IMAGE -f && cd ~/deploy && rm -rf TMP_OLD_IMAGE.tmp) > /dev/null 2>&1 || echo no"
+
+  artifacts:
+    paths:
+      - docker_image.tmp
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: stop_deployment
+
+
+stop_deployment:
+  image: mchregistry.mch.mfu.ac.th/testdeployer
+  stage: deploytest
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p 2297 $SERVER_DEV_IP >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - PIPELINE_REGISTRY_IMAGE=$(cat docker_image.tmp)
+
+    # delete all resources
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && cd $CI_PROJECT_NAME && kubectl delete -f ./k8s_yaml/all.yaml > /dev/null 2>&1 || echo no"
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "cd ~/deploy && (ls $CI_PROJECT_NAME && rm -rf $CI_PROJECT_NAME) > /dev/null 2>&1 || echo no"
+    - ssh -p 2297 $SERVER_DEV_USER@$SERVER_DEV_IP "docker image rm $PIPELINE_REGISTRY_IMAGE -f"
+    
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+
+
+push:
+  stage: push
+  image: mchregistry.mch.mfu.ac.th/docker-local:19.03.12
+  services:
+    - mchregistry.mch.mfu.ac.th/docker-local:19.03.12-dind
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+  script:
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+    - docker login $CI_REGISTRY
+    - PIPELINE_REGISTRY_IMAGE=$(cat docker_image.tmp)
+    - (docker push $PIPELINE_REGISTRY_IMAGE) > /dev/null 2>&1 || echo no push!
+    - echo '' && echo $PIPELINE_REGISTRY_IMAGE && echo ''
+  artifacts:
+    paths:
+      - docker_image.tmp
+  when: manual
+  environment:
+    name: production

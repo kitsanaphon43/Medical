@@ -1,0 +1,150 @@
+#btn {
+    margin-top: 20px;
+}
+.hidden{
+    display: none;
+}
+#Btn-SetItems {
+    margin-top: 5px;
+}
+
+#myTable {
+    vertical-align: middle;
+}
+
+#idenTable {
+    border: none;
+    vertical-align: middle;
+    /* background-color: rgb(39, 38, 40);*/
+}
+
+.form-check {
+    margin-top: 1px;
+
+}
+
+#bedcost {
+    font-size: large;
+    font-weight: bold;
+}
+
+#finding {
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    left: 0%;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0 !important;
+}
+
+#savebar {
+    align-items: center;
+    background-color: white;
+    height: 80px;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    border-top: 0.5px solid black;
+}
+
+#EstimateTable {
+    margin-bottom: 90px;
+}
+#EstimateTable tbody td{
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+}
+#EstimateTable thead{
+    border: 1px solid gray;
+}
+#EstimateTable tfoot{
+    border: 1px solid gray;
+}
+
+#itb {
+    border: 1px solid gray;
+}
+
+#itb tbody {
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
+#itb td {
+    border-bottom: 1px solid gray;
+    max-width:150px;
+  }
+  .del{
+    width: 30px;
+    height: 30px;
+  }
+#bigroom{
+    display: none;
+}
+#smallroom{
+    display: none;
+}
+#menu{
+    text-align: center;
+    /*border-right: 1px solid gray;*/
+    
+}
+.choosed{
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+}
+#menu a{
+    color: black;
+    text-decoration: none;
+}
+.choosed:hover{
+    color: black;
+    font-weight: bold;
+}
+.now{
+    font-weight: bold;
+    border: 1 solid black;
+    border-top-left-radius:500px ;
+    border-bottom-left-radius:500px ;
+    background-color: rgb(69, 158, 214);
+    padding: 10px;
+    color: white;
+}
+.choosed:hover{
+    border: 1 solid black;
+    border-top-left-radius:500px ;
+    border-bottom-left-radius:500px ;
+    background-color: rgb(191, 218, 235);
+}
+#tablezone{
+   display: none ;
+}
+.form-switch .form-check-input:focus {
+    border-color: rgba(0, 0, 0, 0.25);
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+}
+.form-switch .form-check-input:checked {
+    background-color: #35fd2e;
+    border-color: #35fd2e;
+}
+
+.now a{
+    text-decoration: none;
+    color:blue;
+   
+}
+.blocker{
+    background-color:white;
+    border-top:1px solid gray ;
+    position: fixed;bottom:0;
+    left:40%
+}
+a.disabled{
+        pointer-events: none;
+        cursor: default;
+}
