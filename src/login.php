@@ -27,15 +27,15 @@
                         <center>
                             <h4 class="card-title" style="margin-top:30%">เข้าสู่ระบบ</h4>
                         </center>
-                                <form action="" method="post">
+                                <form action="newpath.php" method="post">
                                     <nav>ชื่อผู้ใช้งาน</nav>
-                                    <input type="text " class="form-control">
+                                    <input type="text " name="username" class="form-control">
                                     <br>
                                     <nav>รหัสผ่าน</nav>
-                                    <input type="password" class="form-control">
+                                    <input type="password" name="passwd" class="form-control">
                                     <input type="checkbox" onchange="showpwd()" name="" id=""> แสดงรหัสผ่าน
                                     <br>
-                                   <center><input type="submit" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;"></center>
+                                   <center><input type="submit" name="login" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;"></center>
                                 </form>                           
                 </div>
          
