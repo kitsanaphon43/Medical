@@ -22,7 +22,7 @@ if (!empty($_SESSION['HN'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/s.css">
+    <link rel="stylesheet" type="text/css" href="css/s.css?<?php echo time() ?>">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -33,6 +33,9 @@ if (!empty($_SESSION['HN'])) {
 
 </head>
 <style>
+    body{
+        overflow: hidden;
+    }
     .d_analyse {
         color: black;
         text-decoration: none;
@@ -49,63 +52,29 @@ if (!empty($_SESSION['HN'])) {
 </style>
 
 <body style="font-family: 'Noto Sans Thai', sans-serif; ">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                 
+                </ul>
+                <form class="d-flex my-2 my-lg-0">
+                 
+                    <button class="btn btn-danger my-2 my-sm-0" type="submit">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
 
 
     <div class="container-fluid">
 
-
-        <div class="row" style="display: block;" >
-            <div class="col-md-12" >
-
-
-                <div class="row">
-                    <div class="col-md-12" style="background-color:rgb(69, 158, 214);color:white">
-                        <h2 style="text-align: center;margin-top:20px;">ระบบประเมินค่ารักษาพยาบาล</h2>
-
-                    </div>
-                    <hr>
-                    <div class="col-md-3" id="HNfind">
-                        <form action="path.php" method="post">
-                            <input type="text" class="form-control" <?php if (!empty($_SESSION['HN'])) { ?> value=<?php echo $hnid; ?><?php } ?> name="hn" id="hn_id" placeholder="HN" aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-                            <div class="input-group-append">
-                                <input type="submit" class="btn btn-outline-secondary w-100" value="เลือก" name="hn_btn" id="hnclick" type="button">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody id="idenTable">
-                                    <tr>
-                                        <td>HN</td>
-                                        <td>--</td>
-                                        <td>ชื่อ-นามสกุล</td>
-                                        <td>--</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ที่อยู่</td>
-                                        <td>--</td>
-                                        <td>บัตรประชาชน</td>
-                                        <td>--</td>
-                                    </tr>
-                                    <tr>
-                                        <td>เบอร์ติดต่อ</td>
-                                        <td>--</td>
-                                        <td>สิทธิ์</td>
-                                        <td>
-                                            --
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <hr>
-        </div>
         <div id="tablezone">
             <div class="row">
 
@@ -113,13 +82,13 @@ if (!empty($_SESSION['HN'])) {
                 <!--Estimate Table-->
                 <div class="col-md-2" id="menu">
                     <div class="row">
-                        <a href="index.php">
-                            <div class="col-md-12 now">
+                        <a href="index.php" class="now">
+                            <div class="col-md-12 ">
                                 <img src="img/home.png" width="30px;" alt=""> หน้าแรก
                             </div>
                         </a>
-                        <a href="estimate.php">
-                            <div class="col-md-12 choosed">
+                        <a href="estimate.php" class="choosed">
+                            <div class="col-md-12 ">
                                 เพิ่มใบประเมินราคา
                             </div>
                         </a>
@@ -132,19 +101,70 @@ if (!empty($_SESSION['HN'])) {
                         <center>
                             <hr style="width:100px;">
                         </center>
-                        <a href="setmanager.php">
-                            <div class="col-md-12 choosed">
+                        <a href="setmanager.php" class="choosed">
+                            <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
                             </div>
                         </a>
-                        <a href="lab_xray.php">
-                            <div class="col-md-12 choosed">
+                        <a href="lab_xray.php" class="choosed">
+                            <div class="col-md-12 ">
                                 จัดการชุดแล็ปและเอกซเรย์
+                            </div>
+                        </a>
+                        <a href="setmanager.php" class="choosed">
+                            <div class="col-md-12 ">
+                                จัดการสิทธิการเข้าถึง
+                            </div>
+                        </a>
+                        <a href="setmanager.php" class="choosed">
+                            <div class="col-md-12 ">
+                                จัดการสิทธิการประเมิน
                             </div>
                         </a>
                     </div>
                 </div>
                 <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-3" id="HNfind">
+                            <form action="path.php" method="post">
+                                <br>
+                                <input type="text" class="form-control" <?php if (!empty($_SESSION['HN'])) { ?> value=<?php echo $hnid; ?><?php } ?> name="hn" id="hn_id" placeholder="กรุณากรอก HN ผู้ประเมิน" aria-label="Recipient's username" aria-describedby="basic-addon2">
+
+                                <div class="input-group-append">
+                                    <input type="submit" class="btn btn-primary w-100" value="เลือก" name="hn_btn" id="hnclick" type="button">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <br>
+                                <table class="table table-borderless">
+                                    <tbody id="idenTable">
+                                        <tr>
+                                            <td>HN</td>
+                                            <td>--</td>
+                                            <td>ชื่อ-นามสกุล</td>
+                                            <td>--</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ที่อยู่</td>
+                                            <td>--</td>
+                                            <td>บัตรประชาชน</td>
+                                            <td>--</td>
+                                        </tr>
+                                        <tr>
+                                            <td>เบอร์ติดต่อ</td>
+                                            <td>--</td>
+                                            <td>สิทธิ์</td>
+                                            <td>
+                                                --
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <table id="myTable" class="table table-bordered" style="width:100%;border:1px">
                         <thead>
                             <tr>
@@ -187,8 +207,8 @@ if (!empty($_SESSION['HN'])) {
                                                     <a href="appraisal.php?doc_id=<?php echo $row['doc_id']; ?>" id="print_btn" class='btn btn-outline-primary' onmouseover="img('<?php echo 'img' . $row['doc_id'] ?>','img/pw.png')" onmouseout="img('<?php echo 'img' . $row['doc_id'] ?>','img/open_eye.png')">
                                                         <img src='img/open_eye.png' id="<?php echo 'img' . $row['doc_id'] ?>" width='20px'>
                                                     </a>
-                                                    <a href="Estimate.php?doc_id=<?php echo $row['doc_id']; ?>" id="dt_btn" class='btn btn-outline-warning' onmouseover="img('<?php echo 'img' . $row['doc_id'].'_2' ?>','img/clone_w.png')" onmouseout="img('<?php echo 'img' . $row['doc_id'].'_2' ?>','img/clone_y.png')">
-                                                        <img src='img/clone_y.png' id="<?php echo 'img' . $row['doc_id'].'_2' ?>" width='20px'>
+                                                    <a href="Estimate.php?doc_id=<?php echo $row['doc_id']; ?>" id="dt_btn" class='btn btn-outline-warning' onmouseover="img('<?php echo 'img' . $row['doc_id'] . '_2' ?>','img/clone_w.png')" onmouseout="img('<?php echo 'img' . $row['doc_id'] . '_2' ?>','img/clone_y.png')">
+                                                        <img src='img/clone_y.png' id="<?php echo 'img' . $row['doc_id'] . '_2' ?>" width='20px'>
                                                     </a>
                                                 </center>
                                             </td>
@@ -225,10 +245,11 @@ if (!empty($_SESSION['HN'])) {
     });
     tippy('#print_btn', {
         content: 'print!',
-      });
-      tippy('#dt_btn', {
+    });
+    tippy('#dt_btn', {
         content: 'Duplicate Template',
-      });
+    });
+
     function img(id, path) {
         var img = document.getElementById(id);
         img.src = path;
