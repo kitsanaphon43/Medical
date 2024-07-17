@@ -4,7 +4,7 @@
 <?php
 include("connect.php");
 session_start();
-if(empty($_SESSION['fname'])){
+if (empty($_SESSION['fname'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
 }
@@ -32,12 +32,11 @@ if (!empty($_SESSION['HN'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+
     <title>Estimate</title>
 
 </head>
 <style>
-
-
     .d_analyse {
         color: black;
         text-decoration: none;
@@ -69,14 +68,14 @@ if (!empty($_SESSION['HN'])) {
                     <ul class="navbar-nav me-auto mt-2 mt-lg-0">
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'].' '.$_SESSION['lname'];?></a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
                                 <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                         </li>
                     </ul>
-                   
-                    <a href="newpath.php?logout=<?php echo time()?>" class=" btn my-2 my-sm-0" id="Logout">
+
+                    <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
                         ออกจากระบบ
                     </a>
                 </form>
@@ -136,96 +135,42 @@ if (!empty($_SESSION['HN'])) {
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-3" id="HNfind">
-                            <form action="path.php" method="post">
-                                <br>
-                                <input type="text" class="form-control" <?php if (!empty($_SESSION['HN'])) { ?> value=<?php echo $hnid; ?><?php } ?> name="hn" id="hn_id" placeholder="กรุณากรอก HN ผู้ประเมิน" aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-                                <div class="input-group-append">
-                                    <input type="submit" class="btn btn-primary w-100" value="เลือก" name="hn_btn" id="hnclick" type="button">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="table-responsive">
-                                <br>
-                                <table class="table table-borderless">
-                                    <tbody id="idenTable">
-                                        <tr>
-                                            <td>HN</td>
-                                            <td>--</td>
-                                            <td>ชื่อ-นามสกุล</td>
-                                            <td>--</td>
-                                        </tr>
-                                        <tr>
-                                            <td>ที่อยู่</td>
-                                            <td>--</td>
-                                            <td>บัตรประชาชน</td>
-                                            <td>--</td>
-                                        </tr>
-                                        <tr>
-                                            <td>เบอร์ติดต่อ</td>
-                                            <td>--</td>
-                                            <td>สิทธิ์</td>
-                                            <td>
-                                                --
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     <table id="myTable" class="table table-bordered" style="width:100%;border:1px">
                         <thead>
                             <tr>
                                 <th style="text-align: center;">รหัส</th>
-                                <th style="text-align: center;">ใบที่</th>
-                                <th style="text-align: center;">การวินิจฉัย</th>
-                                <th style="text-align: center;">สิทธิ์</th>
-                                <th style="text-align: center;">ราคาประมาณ</th>
-                                <th style="text-align: center;">วันที่ออกใบประเมิน</th>
+                                <th style="text-align: center;">ชื่อ</th>
+                                <th style="text-align: center;">นามสกุล</th>
+                                <th style="text-align: center;">ตำแหน่งงาน</th>
+                                <th style="text-align: center;">การเข้าถึง</th>
                                 <th style="text-align: center;"></th>
                             </tr>
                         </thead>
                         <tbody id="history">
                             <?php
-                            if (!empty($hnid)) {
-                                $sql = "SELECT d.doc_id,d.doc_no,d.doc_name,uc.uc_name,v.HN_id,d.doc_total,d.doc_date,d.doc_status
-                                    FROM docestimate d LEFT JOIN visit v ON d.HN_id = v.HN_id LEFT JOIN uc 
-                                    ON d.doc_privacy = uc.uc_id
-                                    WHERE d.HN_id = '" . $hnid . "'";
-                                if ($res = mysqli_query($conn, $sql)) {
-                                    while ($row = mysqli_fetch_array($res)) {
+                            $user_sql = "SELECT * FROM users";
+                            if ($result = mysqli_query($conn, $user_sql)) {
+                                while ($row = mysqli_fetch_array($result)) {
                             ?>
-                                        <script>
-                                            var doc_total = <?php echo $row['doc_total']; ?>;
-                                            doc_total = doc_total.toLocaleString();
-                                        </script>
-                                        <tr>
-                                            <td width="15%"><?php echo $row['doc_id'] ?></td>
-                                            <td width="5%" style="text-align:center;"><?php echo $row['doc_no'] ?></td>
-                                            <td width="15%"><?php echo $row['doc_name'] ?></td>
-                                            <td width="5%"><?php echo $row['uc_name'] ?></td>
-                                            <td width="15%" style="text-align: right;">
-                                            <?php echo number_format($row['doc_total']).' บาท';  ?>
-                                            </td>
-                                            <td style="text-align: right;" width="20%"><?php echo $row['doc_date'] ?></td>
-                                            <td width="10%">
-                                                <center>
-                                                    <a href="appraisal.php?doc_id=<?php echo $row['doc_id']; ?>" id="print_btn" class='btn btn-outline-primary' onmouseover="img('<?php echo 'img' . $row['doc_id'] ?>','img/pw.png')" onmouseout="img('<?php echo 'img' . $row['doc_id'] ?>','img/open_eye.png')">
-                                                        <img src='img/open_eye.png' id="<?php echo 'img' . $row['doc_id'] ?>" width='20px'>
-                                                    </a>
-                                                    <a href="Estimate.php?doc_id=<?php echo $row['doc_id']; ?>" id="dt_btn" class='btn btn-outline-warning' onmouseover="img('<?php echo 'img' . $row['doc_id'] . '_2' ?>','img/clone_w.png')" onmouseout="img('<?php echo 'img' . $row['doc_id'] . '_2' ?>','img/clone_y.png')">
-                                                        <img src='img/clone_y.png' id="<?php echo 'img' . $row['doc_id'] . '_2' ?>" width='20px'>
-                                                    </a>
-                                                </center>
-                                            </td>
-
-                                        </tr>
+                                    <tr>
+                                        <td><?php echo $row['user_id']; ?></td>
+                                        <td><?php echo $row['user_fname']; ?></td>
+                                        <td><?php echo $row['user_lname']; ?></td>
+                                        <td><?php echo $row['job']; ?></td>
+                                        <td>
+                                                <select class="form-select form-select-sm w" name="" id="">
+                                                     <option value="user" <?php if($row['level'] == 'user'){echo 'selected';} ?>>user</option> 
+                                                    <option value="admin" <?php if($row['level'] == 'admin'){echo 'selected';} ?>>admin</option>
+                                                     <option value="master" <?php if($row['level'] == 'master'){echo 'selected';} ?>>Master</option>
+                                                </select>
+                                            
+                                        </td>
+                                        <td width="15%">
+                                            <a class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
+                                            <a class="btn btn-danger w-100">ลบบัญชี</a>
+                                        </td>
+                                    </tr>
                             <?php
-                                    }
                                 }
                             }
                             ?>
@@ -233,9 +178,10 @@ if (!empty($_SESSION['HN'])) {
                     </table>
                 </div>
 
-                <!---->
+
             </div>
         </div>
+
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
