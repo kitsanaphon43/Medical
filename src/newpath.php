@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include_once("connect.php");
  if(isset($_POST['login'])){
     $pass_md5 = md5($_POST['passwd']);
@@ -19,11 +20,16 @@ include_once("connect.php");
             $_SESSION['fname'] = $r['user_fname'];
             $_SESSION['lname'] = $r['user_lname'];
         }
-       // echo $_SESSION['fname'];
+
         header('location:index.php');
         }
     }else{
         header('location:login.php?t='.time());
+    }
+}
+if(isset($_GET['logout'])){ 
+    if(session_destroy() == TRUE){
+        header('Location:login.php');
     }
 }
 ?>

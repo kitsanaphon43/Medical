@@ -7,7 +7,7 @@ session_start();
 if (empty($_SESSION['HN'])) {
   header('Location:index.php');
 }
-if(isset($_GET['er'])){
+if (isset($_GET['er'])) {
   echo "<script>alert('ไฟล์ Excel นี้ไม่ถูกต้องตามฟอร์มที่กำหนด - กรุณาดาวน์โหลดฟอร์ม')</script>";
 }
 if (isset($_GET['id'])) {
@@ -35,22 +35,47 @@ if (isset($_GET['id'])) {
 </head>
 
 <body style="font-family: 'Noto Sans Thai', sans-serif;">
+  <nav class="navbar navbar-expand-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
 
+        </ul>
+        <form class="d-flex my-2 my-lg-0">
+          <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
+              <div class="dropdown-menu" aria-labelledby="dropdownId">
+                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+              </div>
+            </li>
+          </ul>
+
+          <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
+            ออกจากระบบ
+          </a>
+        </form>
+      </div>
+    </div>
+  </nav>
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-12" style="background-color:rgb(69, 158, 214);color:white">
-        <h2 style="text-align: center;margin-top:20px;">จัดการชุดผ่าตัด</h2>
-      </div>
-      <div class="col-md-2" style="margin-top:20px;" id="menu">
+
+      <div class="col-md-2" id="menu">
         <div class="row">
-          <a href="index.php">
-            <div class="col-md-12 choosed">
+          <a href="index.php" class="choosed">
+            <div class="col-md-12 ">
               หน้าแรก
             </div>
           </a>
-          <a href="estimate.php">
-            <div class="col-md-12 choosed">
+          <a href="estimate.php" class="choosed">
+            <div class="col-md-12 ">
               เพิ่มใบประเมินราคา
             </div>
           </a>
@@ -63,14 +88,24 @@ if (isset($_GET['id'])) {
           <center>
             <hr style="width:100px;">
           </center>
-          <a href="setmanager.php">
-            <div class="col-md-12 now">
-              <img src="img/surgical.png" width="30px;" alt=""> จัดการชุดผ่าตัด
+          <a href="setmanager.php" class="now">
+            <div class="col-md-12 ">
+              จัดการชุดผ่าตัด
             </div>
           </a>
-          <a href="lab_xray.php">
-            <div class="col-md-12 choosed">
+          <a href="lab_xray.php" class="choosed">
+            <div class="col-md-12 ">
               จัดการชุดแล็ปและเอกซเรย์
+            </div>
+          </a>
+          <a href="setmanager.php" class="choosed">
+            <div class="col-md-12 ">
+              จัดการสิทธิการเข้าถึง
+            </div>
+          </a>
+          <a href="setmanager.php" class="choosed">
+            <div class="col-md-12 ">
+              จัดการสิทธิการประเมิน
             </div>
           </a>
         </div>

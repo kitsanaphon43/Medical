@@ -52,7 +52,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/s.css">
+    <link rel="stylesheet" href="css/s.css?<?php echo time();?>">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -63,22 +63,47 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
 </head>
 
 <body style="font-family: 'Noto Sans Thai', sans-serif;">
+    <nav class="navbar navbar-expand-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+                </ul>
+                <form class="d-flex my-2 my-lg-0">
+                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
+                        ออกจากระบบ
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12" style="background-color:rgb(69, 158, 214);color:white">
-                <h2 style="text-align: center;margin-top:20px;">เพิ่มใบประเมินราคา</h2>
-            </div>
             <!--interface เมนู-->
-            <div class="col-md-2" style="margin-top:20px;" id="menu">
+            <div class="col-md-2" id="menu">
                 <div class="row">
-                    <a href="index.php">
-                        <div class="col-md-12 choosed">
+                    <a href="index.php" class="choosed">
+                        <div class="col-md-12 ">
                             หน้าแรก
                         </div>
                     </a>
-                    <a href="estimate.php">
-                        <div class="col-md-12 now">
-                            <img src="img/add.png" width="30px;" alt=""> เพิ่มใบประเมินราคา
+                    <a href="estimate.php" class="choosed now">
+                        <div class="col-md-12 ">
+                            เพิ่มใบประเมินราคา
                         </div>
                     </a>
 
@@ -90,21 +115,31 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                     <center>
                         <hr style="width:100px;">
                     </center>
-                    <a href="setmanager.php">
-                        <div class="col-md-12 choosed">
+                    <a href="setmanager.php" class="choosed">
+                        <div class="col-md-12 ">
                             จัดการชุดผ่าตัด
                         </div>
                     </a>
-                    <a href="lab_xray.php">
-                        <div class="col-md-12 choosed">
+                    <a href="lab_xray.php" class="choosed">
+                        <div class="col-md-12 ">
                             จัดการชุดแล็ปและเอกซเรย์
+                        </div>
+                    </a>
+                    <a href="setmanager.php" class="choosed">
+                        <div class="col-md-12 ">
+                            จัดการสิทธิการเข้าถึง
+                        </div>
+                    </a>
+                    <a href="setmanager.php" class="choosed">
+                        <div class="col-md-12 ">
+                            จัดการสิทธิการประเมิน
                         </div>
                     </a>
                 </div>
             </div>
             <div class="col-md-10" style="margin-top:20px;">
 
-                <div class="row">
+                <div class="row" style="margin-left:5px;">
                     <!--interface สิทธิ์-->
                     <div class="col-md-12" style="margin-bottom:20px;">
                         <h5>สิทธิ์</h5>
@@ -692,7 +727,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
         //console.log(bigdata);
         var j = JSON.stringify(bigdata);
         if (privacy && or_value && lab_value && rest_value && room_value && other_value[0] != "ERROR") {
-             window.location.href = "path.php?j=" + j + "&hndoc=" + ses;
+            window.location.href = "path.php?j=" + j + "&hndoc=" + ses;
         } else {
             alert("กรุณากรอกข้อมูลให้ครบ");
         }
@@ -794,17 +829,17 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
 
             if (data[0].checked == true) {
                 if (data[1].value && data[3].value && data[2].value) {
-                   // console.log(i);
+                    // console.log(i);
                     other_value[i - 1] = {
-                    "name": data[1].value,
-                    "price": data[3].value,
-                    "amount": data[2].value
-                }
+                        "name": data[1].value,
+                        "price": data[3].value,
+                        "amount": data[2].value
+                    }
                 } else {
                     other_value[0] = "ERROR";
                     alert("กรุณากรอกข้อมูลค่าบริการให้ครบ");
                 }
-               
+
             }
         }
         return other_value;

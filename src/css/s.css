@@ -100,12 +100,16 @@
     text-align: right;
     /*border-right: 1px solid gray;*/
     background-color: #F2E9E9;
-    height: 1080px;
+    min-height: 880px;
+    max-height: 1680px;
 
 }
 .navbar{
     background-color: #566B73;
 }
+.navbar-nav > li > .dropdown-toggle:focus {     color: #e3dddd;  }
+.navbar-nav > li > .dropdown-menu {     background-color: #000000;  }
+.navbar-nav > li > .dropdown-menu a:hover{     background-color: #3a3838;  }
 .navbar a{
     color: white;
 }
@@ -143,7 +147,13 @@
     border: 1 solid black;
     background-color: rgb(114, 182, 225);
 }
-
+#logout{
+    color:white;
+}
+#logout:hover{
+    font-weight: bold;
+    color:rgb(218, 100, 100);
+}
 #tablezone {
     display: block;
 }

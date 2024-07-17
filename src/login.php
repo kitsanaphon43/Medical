@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    include_once "connect.php";
+    if(!empty($_SESSION['fname'])){
+        echo $_SESSION['fname'];
+        header('location:index.php');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +43,15 @@
                                     <input type="password" name="passwd" class="form-control">
                                     <input type="checkbox" onchange="showpwd()" name="" id=""> แสดงรหัสผ่าน
                                     <br>
-                                   <center><input type="submit" name="login" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;"></center>
+                                    
+                                   <center>
+                                    <?php 
+                                        if(isset($_GET['t'])) {
+                                            echo "<nav style='color:red;'>กรุณาใส่ชื่อผู้ใช้งานหรือรหัสผ่านให้ถูกต้อง</nav>";
+                                        }
+                                    ?>
+                                    <input type="submit" name="login" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;">
+                                    </center>
                                 </form>                           
                 </div>
          

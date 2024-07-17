@@ -4,7 +4,10 @@
 <?php
 include("connect.php");
 session_start();
-
+if(empty($_SESSION['fname'])){
+    echo $_SESSION['fname'];
+    header("location:login.php");
+}
 if (!empty($_SESSION['HN'])) {
     $hnid = $_SESSION['HN'];
 ?>
@@ -33,9 +36,8 @@ if (!empty($_SESSION['HN'])) {
 
 </head>
 <style>
-    body{
-        overflow: hidden;
-    }
+
+
     .d_analyse {
         color: black;
         text-decoration: none;
@@ -51,8 +53,9 @@ if (!empty($_SESSION['HN'])) {
     }
 </style>
 
+
 <body style="font-family: 'Noto Sans Thai', sans-serif; ">
-    <nav class="navbar">
+    <nav class="navbar navbar-expand-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,13 +63,22 @@ if (!empty($_SESSION['HN'])) {
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                 
+
                 </ul>
                 <form class="d-flex my-2 my-lg-0">
-                 
-                    <button class="btn btn-danger my-2 my-sm-0" type="submit">
-                        Logout
-                    </button>
+                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'].' '.$_SESSION['lname'];?></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                            </div>
+                        </li>
+                    </ul>
+                   
+                    <a href="newpath.php?logout=<?php echo time()?>" class=" btn my-2 my-sm-0" id="Logout">
+                        ออกจากระบบ
+                    </a>
                 </form>
             </div>
         </div>
