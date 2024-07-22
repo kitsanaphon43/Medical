@@ -136,47 +136,21 @@ if (!empty($_SESSION['HN'])) {
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <table id="myTable" class="table table-bordered" style="width:100%;border:1px">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">รหัส</th>
-                                <th style="text-align: center;">ชื่อ</th>
-                                <th style="text-align: center;">นามสกุล</th>
-                                <th style="text-align: center;">ตำแหน่งงาน</th>
-                                <th style="text-align: center;">การเข้าถึง</th>
-                                <th style="text-align: center;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="history">
-                            <?php
-                            $user_sql = "SELECT * FROM users";
-                            if ($result = mysqli_query($conn, $user_sql)) {
-                                while ($row = mysqli_fetch_array($result)) {
-                            ?>
-                                    <tr>
-                                        <td><?php echo $row['user_id']; ?></td>
-                                        <td><?php echo $row['user_fname']; ?></td>
-                                        <td><?php echo $row['user_lname']; ?></td>
-                                        <td><?php echo $row['job']; ?></td>
-                                        <td>
-                                                <select class="form-select form-select-sm w" name="" id="">
-                                                     <option value="user" <?php if($row['level'] == 'user'){echo 'selected';} ?>>user</option> 
-                                                    <option value="admin" <?php if($row['level'] == 'admin'){echo 'selected';} ?>>admin</option>
-                                                     <option value="master" <?php if($row['level'] == 'master'){echo 'selected';} ?>>Master</option>
-                                                </select>
-                                            
-                                        </td>
-                                        <td width="15%">
-                                            <a href="register.php" class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
-                                            <a href="" class="btn btn-danger w-100">ลบบัญชี</a>
-                                        </td>
-                                    </tr>
-                            <?php
-                                }
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                      <form action="post">
+                        <div class="row">
+                        <div class="col-md-2"></div>
+                          
+                                <div class="col-md-4">
+                                    <nav>ชื่อ</nav><input type="text" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <nav>ชื่อ</nav><input type="text" class="form-control">
+                                </div>
+                      
+                            <div class="col-md-2"></div>
+                        </div>
+                          </form>
+                    
                 </div>
 
 
