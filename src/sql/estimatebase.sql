@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 22, 2024 at 11:35 AM
+-- Generation Time: Jul 22, 2024 at 12:06 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -1861,7 +1861,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_fname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `job` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `level` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`)
@@ -1873,8 +1873,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`user_id`, `user_fname`, `user_lname`, `username`, `password`, `job`, `level`) VALUES
 ('USER001', 'กฤษณพล', 'เกษมสุภัค', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'ผู้ช่วยพยาบาล', 'master'),
-('USER002', 'เขมณี', 'แช่จาง', 'test', '202cb962ac59075b964b07152d234b70\r\n', 'ผู้ช่วยพยาบาล', 'admin'),
-('USER003', 'ใจพิสุทธิ์', 'เทวพรม', 'ืuser1', '202cb962ac59075b964b07152d234b70\r\n', 'ผู้ช่วยพยาบาล', 'user');
+('USER002', 'เขมณี', 'แช่จาง', 'test', '202cb962ac59075b964b07152d234b70', 'ผู้ช่วยพยาบาล', 'admin'),
+('USER003', 'ใจพิสุทธิ์', 'เทวพรม', 'ืuser1', '202cb962ac59075b964b07152d234b70', 'ผู้ช่วยพยาบาล', 'user');
 
 -- --------------------------------------------------------
 
