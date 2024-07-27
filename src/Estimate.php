@@ -52,7 +52,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/s.css?<?php echo time();?>">
+    <link rel="stylesheet" href="css/s.css?<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -98,10 +98,10 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                 <div class="row">
                     <a href="index.php" class="choosed">
                         <div class="col-md-12 ">
-                            หน้าแรก
+                          หน้าแรก
                         </div>
                     </a>
-                    <a href="estimate.php" class="choosed now">
+                    <a href="estimate.php" class="now">
                         <div class="col-md-12 ">
                             เพิ่มใบประเมินราคา
                         </div>
@@ -112,9 +112,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                             พิมพ์ใบประเมินราคา
                         </div>
                     </a>
-                    <center>
-                        <hr style="width:100px;">
-                    </center>
+
                     <a href="setmanager.php" class="choosed">
                         <div class="col-md-12 ">
                             จัดการชุดผ่าตัด
@@ -125,16 +123,21 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                             จัดการชุดแล็ปและเอกซเรย์
                         </div>
                     </a>
-                    <a href="setmanager.php" class="choosed">
-                        <div class="col-md-12 ">
-                            จัดการสิทธิการเข้าถึง
-                        </div>
-                    </a>
-                    <a href="setmanager.php" class="choosed">
-                        <div class="col-md-12 ">
-                            จัดการสิทธิการประเมิน
-                        </div>
-                    </a>
+                    <?php if ($_SESSION['level'] == 'admin') { ?>
+                        <center>
+                            <hr style="width:100px;">
+                        </center>
+                        <a href="access.php" class="choosed">
+                            <div class="col-md-12 ">
+                                จัดการสิทธิการเข้าถึง
+                            </div>
+                        </a>
+                        <a href="setmanager.php" class="choosed">
+                            <div class="col-md-12 ">
+                            จัดการสิทธิการรักษา
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="col-md-10" style="margin-top:20px;">
@@ -375,23 +378,23 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
             </div>
         </div>
     </div>
-     <!-- Boolstrap5.0.2 -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-        <!-- datatable -->
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-        <!-- Development -->
-        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-        <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <!-- Boolstrap5.0.2 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <!-- datatable -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
+    <!-- Development -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
-        <!-- Production -->
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
-        <script src="https://unpkg.com/tippy.js@6"></script>
+    <!-- Production -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
 </body>
 <script>
     //libery

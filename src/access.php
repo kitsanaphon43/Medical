@@ -94,9 +94,9 @@ if (!empty($_SESSION['HN'])) {
                 <!--Estimate Table-->
                 <div class="col-md-2" id="menu">
                     <div class="row">
-                        <a href="index.php" class="now">
+                        <a href="index.php" class="choosed">
                             <div class="col-md-12 ">
-                                <img src="img/home.png" width="30px;" alt=""> หน้าแรก
+                                หน้าแรก
                             </div>
                         </a>
                         <a href="estimate.php" class="choosed">
@@ -110,9 +110,7 @@ if (!empty($_SESSION['HN'])) {
                                 พิมพ์ใบประเมินราคา
                             </div>
                         </a>
-                        <center>
-                            <hr style="width:100px;">
-                        </center>
+                       
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
@@ -123,16 +121,21 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <a href="setmanager.php" class="choosed">
+                        <?php if($_SESSION['level'] == 'admin'){ ?>
+                            <center>
+                            <hr style="width:100px;">
+                        </center>
+                        <a href="access.php" class="now">
                             <div class="col-md-12 ">
                                 จัดการสิทธิการเข้าถึง
                             </div>
                         </a>
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
-                                จัดการสิทธิการประเมิน
+                                จัดการสิทธิการรักษา
                             </div>
                         </a>
+                   <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -166,15 +169,13 @@ if (!empty($_SESSION['HN'])) {
                                                 <option value="admin" <?php if ($row['level'] == 'admin') {
                                                                             echo 'selected';
                                                                         } ?>>admin</option>
-                                                <option value="master" <?php if ($row['level'] == 'master') {
-                                                                            echo 'selected';
-                                                                        } ?>>Master</option>
+                                              
                                             </select>
 
                                         </td>
                                         <td width="15%">
                                             <a href="register.php" class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
-                                            <a href="" class="btn btn-danger w-100">ลบบัญชี</a>
+                                            <a href="" class="btn mt-2 btn-outline-danger w-100">ลบบัญชี</a>
                                         </td>
                                     </tr>
                             <?php

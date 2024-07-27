@@ -5,7 +5,7 @@ if (!isset($_GET['doc_id'])) {
     header('Location:index.php');
 } else {
     $doc_id = $_GET['doc_id'];
-    
+
     $docsql = "SELECT `doc_id`, `doc_no`, uc.uc_name, `HN_id`
     , `doc_total`, `doc_date`, `doc_p_total`,`doc_noti` FROM `docestimate` 
     LEFT JOIN uc ON docestimate.doc_privacy = uc.uc_id 
@@ -38,10 +38,10 @@ if (!isset($_GET['doc_id'])) {
         }
     }
     $sname = "";
-    for ($r = 0; $r < count($set_name); $r++) {  
-        if($set_name[$r] != "" && $r != 0) {
+    for ($r = 0; $r < count($set_name); $r++) {
+        if ($set_name[$r] != "" && $r != 0) {
             $sname .= " , ";
-        }  
+        }
         $sname .= $set_name[$r];
     }
 
@@ -66,7 +66,7 @@ if (!isset($_GET['doc_id'])) {
             }
         }
     }
-    $sumarycost = $doc_total - $doc_p_total  ;
+    $sumarycost = $doc_total - $doc_p_total;
     $num = 0;
 } ?>
 <!DOCTYPE html>
@@ -83,46 +83,84 @@ if (!isset($_GET['doc_id'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
     <title>ใบประเมินค่ารักษาพยาบาล</title>
-        
+
 </head>
 
 <body style="font-family: 'Noto Sans Thai', sans-serif;">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12" style="background-color:rgb(69, 158, 214);color:white">
-                <h2 style="text-align: center;margin-top:20px;">ใบประเมินค่ารักษาพยาบาล</h2>
-            </div>
+            <nav class="navbar navbar-expand-sm">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
+                    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
 
-            <div class="col-md-2" style="margin-top:20px;" id="menu">
+                        </ul>
+                        <form class="d-flex my-2 my-lg-0">
+                            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                        <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
+                                ออกจากระบบ
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            <div class="col-md-2" id="menu">
                 <div class="row">
-                    <a href="index.php">
-                        <div class="col-md-12 choosed">
-                            หน้าแรก
+                    <a href="index.php" class="choosed">
+                        <div class="col-md-12 ">
+                             หน้าแรก
                         </div>
                     </a>
-                    <a href="estimate.php" class="disabled">
-                        <div class="col-md-12 choosed">
+                    <a href="estimate.php" class="choosed">
+                        <div class="col-md-12 ">
                             เพิ่มใบประเมินราคา
                         </div>
                     </a>
-                    <a href="appraisal.php" class="disabled">
-                        <div class="col-md-12 now">
-                            <img src="img/print.png" width="30px;" alt=""> พิมพ์ใบประเมินราคา
+
+                    <a href="appraisal.php" class="now">
+                        <div class="col-md-12">
+                            พิมพ์ใบประเมินราคา
                         </div>
                     </a>
-                    <center>
-                        <hr style="width:100px;">
-                    </center>
-                    <a href="setmanager.php">
-                        <div class="col-md-12 choosed">
+
+                    <a href="setmanager.php" class="choosed">
+                        <div class="col-md-12 ">
                             จัดการชุดผ่าตัด
                         </div>
                     </a>
-                    <a href="lab_xray.php">
-                        <div class="col-md-12 choosed">
-                            จัดการชุด LAB แล็ปและเอกซเรย์
+                    <a href="lab_xray.php" class="choosed">
+                        <div class="col-md-12 ">
+                            จัดการชุดแล็ปและเอกซเรย์
                         </div>
                     </a>
+                    <?php if ($_SESSION['level'] == 'admin') { ?>
+                        <center>
+                            <hr style="width:100px;">
+                        </center>
+                        <a href="access.php" class="choosed">
+                            <div class="col-md-12 ">
+                                จัดการสิทธิการเข้าถึง
+                            </div>
+                        </a>
+                        <a href="setmanager.php" class="choosed">
+                            <div class="col-md-12 ">
+                            จัดการสิทธิการรักษา
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </div>
 
@@ -202,8 +240,8 @@ if (!isset($_GET['doc_id'])) {
                                         var i_price = <?php echo  $item_price[$i][$a]; ?>;
                                         var i_total = <?php echo $detail_total[$i][$a]; ?>;
                                         var d_total = <?php echo  $doc_total; ?>;
-                                        var dp_total= <?php echo  $sumarycost; ?>;
-                                        var doc_p_total= <?php echo  $doc_p_total; ?>;
+                                        var dp_total = <?php echo  $sumarycost; ?>;
+                                        var doc_p_total = <?php echo  $doc_p_total; ?>;
                                         i_price = i_price.toLocaleString();
                                         i_total = i_total.toLocaleString();
                                         d_total = d_total.toLocaleString();
@@ -215,13 +253,13 @@ if (!isset($_GET['doc_id'])) {
                                             <?php echo $num ?>
                                         </td>
                                         <td>
-                                            <?php 
-                                                if($Item_type[$i][$a] == 'LAB'|| $Item_type[$i][$a] == 'X-RAY'){
-                                                   echo $Item_type[$i][$a].":".$Item_name[$i][$a];   
-                                                }else{
-                                                    echo $Item_name[$i][$a];
-                                                }
-                                               
+                                            <?php
+                                            if ($Item_type[$i][$a] == 'LAB' || $Item_type[$i][$a] == 'X-RAY') {
+                                                echo $Item_type[$i][$a] . ":" . $Item_name[$i][$a];
+                                            } else {
+                                                echo $Item_name[$i][$a];
+                                            }
+
                                             ?>
                                         </td>
                                         <td style="text-align:right">
@@ -255,7 +293,7 @@ if (!isset($_GET['doc_id'])) {
                             <tr style="border-top: 1px solid gray">
                                 <td colspan="4" style="text-align: right;">ราคาเมื่อใช้สิทธิเบิกได้</td>
                                 <td style="text-align: right;">
-                                <script>
+                                    <script>
                                         document.write(dp_total + " บาท")
                                     </script>
                                 </td>
@@ -264,7 +302,7 @@ if (!isset($_GET['doc_id'])) {
                             <tr style="border-top: 1px solid gray">
                                 <td colspan="4" style="text-align: right;">ราคาที่สิทธิเบิกไม่ได้</td>
                                 <td style="text-align: right;">
-                                <script>
+                                    <script>
                                         document.write(doc_p_total + " บาท")
                                     </script>
                                 </td>
@@ -275,13 +313,13 @@ if (!isset($_GET['doc_id'])) {
                             <tr></tr>
                         </tfoot>
                     </table>
-                </center>  
-                <?php echo "*".$warning?>
+                </center>
+                <?php echo "*" . $warning ?>
                 <center id="signature" style="display: block;">
-                  
+
                     <table class="table table-borderless w-100 mt-5">
                         <tbody>
-                           
+
                             <tr>
                                 <td>ลงชื่อ ............................. ผู้ป่วย/ผู้แทนโดยชอบธรรม</td>
                                 <td>ลงชื่อ ................................ เจ้าหน้าที่ผู้ให้ข้อมูล</td>
@@ -327,9 +365,9 @@ if (!isset($_GET['doc_id'])) {
         window.print();
         setTimeout(() => {
             signature.style.display = 'none';
-                document.title = title;
+            document.title = title;
         }, "0");
-      
+
     }
 </script>
 

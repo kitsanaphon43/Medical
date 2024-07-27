@@ -123,14 +123,14 @@ if (!empty($_SESSION['HN'])) {
                             <center>
                             <hr style="width:100px;">
                         </center>
-                        <a href="setmanager.php" class="choosed">
+                        <a href="access.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการสิทธิการเข้าถึง
                             </div>
                         </a>
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
-                                จัดการสิทธิการประเมิน
+                            จัดการสิทธิการรักษา
                             </div>
                         </a>
                    <?php } ?>

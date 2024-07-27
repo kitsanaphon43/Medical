@@ -94,9 +94,9 @@ if (!empty($_SESSION['HN'])) {
                 <!--Estimate Table-->
                 <div class="col-md-2" id="menu">
                     <div class="row">
-                        <a href="index.php" class="now">
+                        <a href="index.php" class="choosed">
                             <div class="col-md-12 ">
-                                <img src="img/home.png" width="30px;" alt=""> หน้าแรก
+                                หน้าแรก
                             </div>
                         </a>
                         <a href="estimate.php" class="choosed">
@@ -110,9 +110,7 @@ if (!empty($_SESSION['HN'])) {
                                 พิมพ์ใบประเมินราคา
                             </div>
                         </a>
-                        <center>
-                            <hr style="width:100px;">
-                        </center>
+
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
@@ -123,27 +121,34 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการเข้าถึง
-                            </div>
-                        </a>
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการประเมิน
-                            </div>
-                        </a>
+                        <?php if ($_SESSION['level'] == 'admin') { ?>
+                            <center>
+                                <hr style="width:100px;">
+                            </center>
+                            <a href="access.php" class="now">
+                                <div class="col-md-12 ">
+                                    จัดการสิทธิการเข้าถึง
+                                </div>
+                            </a>
+                            <a href="setmanager.php" class="choosed">
+                                <div class="col-md-12 ">
+                                จัดการสิทธิการรักษา
+                                </div>
+                            </a>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
                     <form action="post" style="margin-top:20px;">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-2"><nav>ชื่อ</nav><select name="" class="form-select" id="">
-                                <option value="นาย" selected>นาย</option>
-                                <option value="นาง">นาง</option>
-                                <option value="นางสาว">นางสาว</option>
-                            </select></div>
+                            <div class="col-md-2">
+                                <nav>ชื่อ</nav><select name="" class="form-select" id="">
+                                    <option value="นาย" selected>นาย</option>
+                                    <option value="นาง">นาง</option>
+                                    <option value="นางสาว">นางสาว</option>
+                                </select>
+                            </div>
                             <div class="col-md-3">
                                 <nav>ชื่อ</nav><input type="text" class="form-control">
                             </div>
@@ -191,8 +196,8 @@ if (!empty($_SESSION['HN'])) {
             </div>
         </div>
 
-         <!-- Boolstrap5.0.2 -->
-         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <!-- Boolstrap5.0.2 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
         <!-- datatable -->
