@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 22, 2024 at 12:06 PM
+-- Generation Time: Jul 27, 2024 at 01:37 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -1874,7 +1874,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, `user_fname`, `user_lname`, `username`, `password`, `job`, `level`) VALUES
 ('USER001', 'กฤษณพล', 'เกษมสุภัค', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'ผู้ช่วยพยาบาล', 'master'),
 ('USER002', 'เขมณี', 'แช่จาง', 'test', '202cb962ac59075b964b07152d234b70', 'ผู้ช่วยพยาบาล', 'admin'),
-('USER003', 'ใจพิสุทธิ์', 'เทวพรม', 'ืuser1', '202cb962ac59075b964b07152d234b70', 'ผู้ช่วยพยาบาล', 'user');
+('USER003', 'ใจพิสุทธิ์', 'เทวพรม', 'user1', '202cb962ac59075b964b07152d234b70', 'ผู้ช่วยพยาบาล', 'user');
 
 -- --------------------------------------------------------
 
