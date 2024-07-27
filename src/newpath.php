@@ -6,7 +6,7 @@ include_once("connect.php");
     //echo $_POST['username']." ".$_POST['passwd']."=".$pass_md5;
     //echo $pass_md5;
     $login_sql = "SELECT count(*) as 'accept_point' FROM `users` WHERE `password` = '" . $pass_md5 . "' AND `username` =  '" . $_POST['username'] . "';";
-    $user_sql = "SELECT `user_fname`,`user_lname` FROM `users` WHERE `password` = '" . $pass_md5 . "' AND `username` =  '" . $_POST['username'] . "';";
+    $user_sql = "SELECT `user_fname`,`user_lname`,`level` FROM `users` WHERE `password` = '" . $pass_md5 . "' AND `username` =  '" . $_POST['username'] . "';";
     //echo $login_sql;
     if($res = mysqli_query($conn,$login_sql)){
         while($row = mysqli_fetch_assoc($res)){
@@ -20,6 +20,7 @@ include_once("connect.php");
              while($r = mysqli_fetch_assoc($re)){
             $_SESSION['fname'] = $r['user_fname'];
             $_SESSION['lname'] = $r['user_lname'];
+            $_SESSION['level'] = $r['level'];
         }
 
         header('location:index.php');

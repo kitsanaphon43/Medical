@@ -136,33 +136,71 @@ if (!empty($_SESSION['HN'])) {
                     </div>
                 </div>
                 <div class="col-md-10">
-                      <form action="post">
+                    <form action="post" style="margin-top:20px;">
                         <div class="row">
-                        <div class="col-md-2"></div>
-                          
-                                <div class="col-md-4">
-                                    <nav>ชื่อ</nav><input type="text" class="form-control">
-                                </div>
-                                <div class="col-md-4">
-                                    <nav>ชื่อ</nav><input type="text" class="form-control">
-                                </div>
-                      
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"><nav>ชื่อ</nav><select name="" class="form-select" id="">
+                                <option value="นาย" selected>นาย</option>
+                                <option value="นาง">นาง</option>
+                                <option value="นางสาว">นางสาว</option>
+                            </select></div>
+                            <div class="col-md-3">
+                                <nav>ชื่อ</nav><input type="text" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <nav>ชื่อ</nav><input type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"></div>
+
+                            <div class="col-md-4">
+                                <nav>firstname</nav><input type="text" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <nav>lastname</nav><input type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"></div>
+
+                            <div class="col-md-4">
+                                <nav>e-mail</nav><input type="email" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <nav>เบอร์โทรศัทพ์</nav><input type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"></div>
+
+                            <div class="col-md-4">
+                                <nav>e-mail</nav><input type="email" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <nav>ตำแหน่งงาน</nav><input type="text" class="form-control">
+                            </div>
+
                             <div class="col-md-2"></div>
                         </div>
-                          </form>
-                    
+                    </form>
+
                 </div>
 
 
             </div>
         </div>
 
+         <!-- Boolstrap5.0.2 -->
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <!-- datatable -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Development -->
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
@@ -171,100 +209,5 @@ if (!empty($_SESSION['HN'])) {
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
 </body>
-<script>
-    $(document).ready(function() {
-        new DataTable('#myTable');
-    });
-    tippy('#print_btn', {
-        content: 'print!',
-    });
-    tippy('#dt_btn', {
-        content: 'Duplicate Template',
-    });
-
-    function img(id, path) {
-        var img = document.getElementById(id);
-        img.src = path;
-    }
-
-    function Table_to_Json(id_table) {
-        var table = document.getElementById(id_table);
-        var result = [];
-        var rows = table.rows;
-        var cells;
-        var iLen;
-        for (var i = 0, iLen = rows.length; i < iLen; i++) {
-            cells = rows[i].cells;
-            t = [];
-
-            // Iterate over cells
-            for (var j = 0, jLen = cells.length; j < jLen; j++) {
-                t.push(cells[j].textContent);
-            }
-            result.push(t);
-        }
-        return result;
-    }
-</script>
-<script>
-    if (ses) {
-        hn_search();
-    }
-
-
-    function CaseTable(Orcase, table_id) {
-        let path = Orcase;
-        let rs = [];
-        fetch("Case.json")
-            .then(res => res.text())
-            .then(function(data) {
-                //console.log(data);
-                let myjson = JSON.parse(data); //text to jspOject
-                $("#" + table_id + " tr").remove();
-                var total = 0;
-                for (var i in myjson[path]) {
-                    var row = `<tr>
-                        <td>${myjson[path][i]['ID']}</td>
-                        <td>${myjson[path][i]['Medicine']}</td>
-                        <td>${myjson[path][i]['Amount']}</td><td>
-                        <td>${myjson[path][i]['Price']}</td>
-                    </tr>`;
-                    var table = $("#" + table_id);
-                    var price = myjson[path][i]['Price'];
-                    var amount = myjson[path][i]['Amount'];
-                    total = total + (price * amount);
-                    table.append(row);
-                }
-
-            }).catch(err => {
-                console.log(err)
-            });
-
-    }
-
-
-    function hn_search() {
-        var txt = document.getElementById('hn_id').value;
-        if (txt) {
-            console.log(txt);
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('idenTable').innerHTML = this.responseText;
-                    document.getElementById('tablezone').style.display = 'block';
-
-                }
-            }
-            xmlhttp.open("GET", "path.php?hn_id=" + txt, true);
-            xmlhttp.send();
-        } else {
-            alert("กรุณากรอกรหัส HN เพื่อยืนยันตัวตน");
-        }
-    }
-
-    function test() {
-        console.log("helloworld");
-    }
-</script>
 
 </html>

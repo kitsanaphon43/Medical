@@ -4,7 +4,7 @@
 <?php
 include("connect.php");
 session_start();
-if(empty($_SESSION['fname'])){
+if (empty($_SESSION['fname']) && empty($_SESSION['level'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
 }
@@ -28,16 +28,14 @@ if (!empty($_SESSION['HN'])) {
     <link rel="stylesheet" type="text/css" href="css/s.css?<?php echo time() ?>">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Estimate</title>
 
 </head>
 <style>
-
-
     .d_analyse {
         color: black;
         text-decoration: none;
@@ -69,14 +67,14 @@ if (!empty($_SESSION['HN'])) {
                     <ul class="navbar-nav me-auto mt-2 mt-lg-0">
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'].' '.$_SESSION['lname'];?></a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
                                 <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                         </li>
                     </ul>
-                   
-                    <a href="newpath.php?logout=<?php echo time()?>" class=" btn my-2 my-sm-0" id="Logout">
+
+                    <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
                         ออกจากระบบ
                     </a>
                 </form>
@@ -110,9 +108,7 @@ if (!empty($_SESSION['HN'])) {
                                 พิมพ์ใบประเมินราคา
                             </div>
                         </a>
-                        <center>
-                            <hr style="width:100px;">
-                        </center>
+                       
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
@@ -123,6 +119,10 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
+                        <?php if($_SESSION['level'] == 'admin'){ ?>
+                            <center>
+                            <hr style="width:100px;">
+                        </center>
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการสิทธิการเข้าถึง
@@ -133,6 +133,7 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการสิทธิการประเมิน
                             </div>
                         </a>
+                   <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -209,7 +210,7 @@ if (!empty($_SESSION['HN'])) {
                                             <td width="15%"><?php echo $row['doc_name'] ?></td>
                                             <td width="5%"><?php echo $row['uc_name'] ?></td>
                                             <td width="15%" style="text-align: right;">
-                                            <?php echo number_format($row['doc_total']).' บาท';  ?>
+                                                <?php echo number_format($row['doc_total']) . ' บาท';  ?>
                                             </td>
                                             <td style="text-align: right;" width="20%"><?php echo $row['doc_date'] ?></td>
                                             <td width="10%">
@@ -236,12 +237,16 @@ if (!empty($_SESSION['HN'])) {
                 <!---->
             </div>
         </div>
+         <!-- Boolstrap5.0.2 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <!-- datatable -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Development -->
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>

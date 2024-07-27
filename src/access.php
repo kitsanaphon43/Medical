@@ -159,12 +159,18 @@ if (!empty($_SESSION['HN'])) {
                                         <td><?php echo $row['user_lname']; ?></td>
                                         <td><?php echo $row['job']; ?></td>
                                         <td>
-                                                <select class="form-select form-select-sm w" name="" id="">
-                                                     <option value="user" <?php if($row['level'] == 'user'){echo 'selected';} ?>>user</option> 
-                                                    <option value="admin" <?php if($row['level'] == 'admin'){echo 'selected';} ?>>admin</option>
-                                                     <option value="master" <?php if($row['level'] == 'master'){echo 'selected';} ?>>Master</option>
-                                                </select>
-                                            
+                                            <select class="form-select form-select-sm w" name="" id="">
+                                                <option value="user" <?php if ($row['level'] == 'user') {
+                                                                            echo 'selected';
+                                                                        } ?>>user</option>
+                                                <option value="admin" <?php if ($row['level'] == 'admin') {
+                                                                            echo 'selected';
+                                                                        } ?>>admin</option>
+                                                <option value="master" <?php if ($row['level'] == 'master') {
+                                                                            echo 'selected';
+                                                                        } ?>>Master</option>
+                                            </select>
+
                                         </td>
                                         <td width="15%">
                                             <a href="register.php" class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
@@ -182,13 +188,16 @@ if (!empty($_SESSION['HN'])) {
 
             </div>
         </div>
-
+        <!-- Boolstrap5.0.2 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <!-- datatable -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Development -->
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
