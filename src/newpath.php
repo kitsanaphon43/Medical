@@ -3,18 +3,18 @@ session_start();
 include_once("connect.php");
  if(isset($_POST['login'])){
     $pass_md5 = md5($_POST['passwd']);
-    echo $_POST['username']." ".$_POST['passwd']."=".$pass_md5."<br>";
-    echo $pass_md5."<br>";
+    //echo $_POST['username']." ".$_POST['passwd']."=".$pass_md5."<br>";
+   // echo $pass_md5."<br>";
     $login_sql = "SELECT count(*) as 'accept_point' FROM `users` WHERE `password` = '" . $pass_md5 . "' AND `username` =  '" . $_POST['username'] . "';";
     $user_sql = "SELECT `user_fname`,`user_lname`,`level` FROM `users` WHERE `password` = '" . $pass_md5 . "' AND `username` =  '" . $_POST['username'] . "';";
-    echo $login_sql."<br>";
+    //echo $login_sql."<br>";
     if($res = mysqli_query($conn,$login_sql)){
         while($row = mysqli_fetch_assoc($res)){
             $accept_point =  $row['accept_point'];
             
         }
     }
-    echo $accept_point."<br>";
+   // echo $accept_point."<br>";
     if($accept_point == 1){
         if($re = mysqli_query($conn,$user_sql)){
              while($r = mysqli_fetch_assoc($re)){
@@ -26,7 +26,7 @@ include_once("connect.php");
         header('location:index.php');
         }
     }else{
-      //  header('location:login.php?t='.time());
+        header('location:login.php?t='.time());
     }
 }
 if(isset($_GET['logout'])){ 
