@@ -139,6 +139,7 @@ if (!empty($_SESSION['HN'])) {
                     </div>
                 </div>
                 <div class="col-md-10">
+                    <a href="register.php" class="btn btn-success mt-3 w-25">เพิ่มบัญชีใหม่</a>
                     <table id="myTable" class="table table-bordered" style="width:100%;border:1px">
                         <thead>
                             <tr>

@@ -132,63 +132,86 @@ if (!empty($_SESSION['HN'])) {
                             </a>
                             <a href="setmanager.php" class="choosed">
                                 <div class="col-md-12 ">
-                                จัดการสิทธิการรักษา
+                                    จัดการสิทธิการรักษา
                                 </div>
                             </a>
                         <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <form action="post" style="margin-top:20px;">
-                        <div class="row">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-2">
-                                <nav>ชื่อ</nav><select name="" class="form-select" id="">
-                                    <option value="นาย" selected>นาย</option>
-                                    <option value="นาง">นาง</option>
-                                    <option value="นางสาว">นางสาว</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <nav>ชื่อ</nav><input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <nav>ชื่อ</nav><input type="text" class="form-control">
-                            </div>
-
-                            <div class="col-md-2"></div>
-                            <div class="col-md-2"></div>
-
-                            <div class="col-md-4">
-                                <nav>firstname</nav><input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <nav>lastname</nav><input type="text" class="form-control">
-                            </div>
-
-                            <div class="col-md-2"></div>
-                            <div class="col-md-2"></div>
-
-                            <div class="col-md-4">
-                                <nav>e-mail</nav><input type="email" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <nav>เบอร์โทรศัทพ์</nav><input type="text" class="form-control">
-                            </div>
-
-                            <div class="col-md-2"></div>
-                            <div class="col-md-2"></div>
-
-                            <div class="col-md-4">
-                                <nav>e-mail</nav><input type="email" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <nav>ตำแหน่งงาน</nav><input type="text" class="form-control">
-                            </div>
-
-                            <div class="col-md-2"></div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2">
+                            <nav>คำนำหน้า</nav><select name="" class="form-select" id="callname">
+                                <option value="นาย" selected>นาย</option>
+                                <option value="นาง">นาง</option>
+                                <option value="นางสาว">นางสาว</option>
+                            </select>
                         </div>
-                    </form>
+                        <div class="col-md-3">
+                            <nav>ชื่อ</nav><input type="text" id="fullname" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <nav>นามสกุล</nav><input type="text" id="lastname" class="form-control">
+                        </div>
+
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-4">
+                            <nav>firstname</nav><input type="text" id="engfull" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <nav>lastname</nav><input type="text" id="englast" class="form-control">
+                        </div>
+
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-4">
+                            <nav>e-mail</nav><input type="email" id="mail" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <nav>เบอร์โทรศัทพ์</nav><input type="text" id="phone" class="form-control">
+                        </div>
+
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-4">
+                            <nav>วันเกิด</nav><input type="date" id="bday" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <nav>ตำแหน่งงาน</nav><input type="text" id="job" class="form-control">
+                        </div>
+
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-4">
+                            <nav>ชื่อผู้ใช้งาน</nav><input type="text" id="username" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <nav>รหัสผ่าน</nav><input type="password" id="passwd" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <nav>ยืนยันรหัสผ่าน</nav><input type="password" id="c_passwd" class="form-control">
+                        </div>
+
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-4">
+                            <button onclick="checkinfo()" class="btn btn-success mt-3 w-100" id="">เพิ่มบัญชี</button>
+                        </div>
+                        <div class="col-md-4">
+                            <a class="btn btn-warning w-100 mt-3" href="register.php">รีเซ็ต</a>
+                        </div>
+                        <nav style="color:red" name="noticfity"></nav>
+                        <div class="col-md-2"></div>
+                    </div>
+
 
                 </div>
 
@@ -214,5 +237,28 @@ if (!empty($_SESSION['HN'])) {
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
 </body>
+<script>
+    function checkinfo() {
+        let fullname = $('#fullname').val();
+        let lastname = $('#lastname').val();
+        let engfull = $('#engfull').val();
+        let englast = $('#englast').val();
+        let bday = $('#bday').val();
+        let phone = $('#phone').val();
+        let username = $('#username').val();
+        let passwd = $('#passwd').val();
+        let c_passwd = $('#c_passwd').val();
+        checker(englast,noticfity,"hello");
+    }
+
+    function checker(item,id, txt) {
+        if (item) {
+            console.log("jj");
+            
+        } else {
+            document.getElementsByName('noticfity').href
+        }
+    }
+</script>
 
 </html>
