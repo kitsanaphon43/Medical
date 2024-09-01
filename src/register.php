@@ -9,14 +9,28 @@ if (empty($_SESSION['fname'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
 }
-if (!empty($_SESSION['HN'])) {
-    $hnid = $_SESSION['HN'];
-?>
-    <script>
-        ses = <?php echo $hnid; ?>;
-        console.log("ses:" + ses);
-    </script>
+if (isset($_GET['editu'])) {
+    $editu = $_GET['editu'];
+    $get_pv = "SELECT * FROM users WHERE user_id ='" . $editu . "'";
+    if ($rs = mysqli_query($conn, $get_pv)) {
+        while ($row = mysqli_fetch_array($rs)) {
+             $user_fname = $row['user_fname'];
+             $user_lname = $row['user_lname'];
+             $user_engfull = $row['user_engfull'];
+             $user_englast = $row['user_englast'];
+              $user_mail = $row['user_mail'];
+              $user_phone = $row['user_phone'];
+              $job =  $row['job'] 
+              ?>
+            <script>
+                var user_id = '<?php echo $row['user_id'] ?>';
+                var user_pre = '<?php echo $row['user_pre'] ?>';
+                var user_bday ='<?php echo $row['user_bday'] ?>';
+            </script>
 <?php
+
+        }
+    }
 }
 ?>
 
@@ -150,30 +164,30 @@ if (!empty($_SESSION['HN'])) {
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <nav>ชื่อ</nav><input type="text" id="fullname" class="form-control">
+                            <nav>ชื่อ</nav><input type="text" id="fullname" class="form-control"  value="<?php if(!empty($user_fname)){echo $user_fname;}?>" >
                         </div>
                         <div class="col-md-3">
-                            <nav>นามสกุล</nav><input type="text" id="lastname" class="form-control">
+                            <nav>นามสกุล</nav><input type="text" id="lastname" class="form-control" value="<?php if(!empty($user_lname)){echo $user_lname;}?>">
                         </div>
 
                         <div class="col-md-2"></div>
                         <div class="col-md-2"></div>
 
                         <div class="col-md-4">
-                            <nav>firstname</nav><input type="text" id="engfull" class="form-control">
+                            <nav>firstname</nav><input type="text" id="engfull" class="form-control"  value="<?php if(!empty($user_engfull)){echo $user_engfull;}?>" >
                         </div>
                         <div class="col-md-4">
-                            <nav>lastname</nav><input type="text" id="englast" class="form-control">
+                            <nav>lastname</nav><input type="text" id="englast" class="form-control"  value="<?php if(!empty($user_englast)){echo $user_englast;}?>" >
                         </div>
 
                         <div class="col-md-2"></div>
                         <div class="col-md-2"></div>
 
                         <div class="col-md-4">
-                            <nav>e-mail</nav><input type="email" id="mail" class="form-control">
+                            <nav>e-mail</nav><input type="email" id="mail" class="form-control" value="<?php if(!empty($user_mail)){echo $user_mail;}?>">
                         </div>
                         <div class="col-md-4">
-                            <nav>เบอร์โทรศัทพ์</nav><input type="text" id="phone" class="form-control">
+                            <nav>เบอร์โทรศัทพ์</nav><input type="text" id="phone" class="form-control" value="<?php if(!empty($user_phone)){echo $user_phone;}?>">
                         </div>
 
                         <div class="col-md-2"></div>
@@ -183,14 +197,24 @@ if (!empty($_SESSION['HN'])) {
                             <nav>วันเกิด</nav><input type="date" id="bday" class="form-control">
                         </div>
                         <div class="col-md-4">
-                            <nav>ตำแหน่งงาน</nav><input type="text" id="job" class="form-control">
+                            <nav>ตำแหน่งงาน</nav><input type="text" id="job" class="form-control" value="<?php if(!empty($job)){echo $job;}?>">
                         </div>
 
                         <div class="col-md-2"></div>
                         <div class="col-md-2"></div>
-
-                        <div class="col-md-4">
+                           <?php 
+                            if(empty($_GET['editu'])){
+                                ?>
+                          
+                        <div class="col-md-2">
                             <nav>ชื่อผู้ใช้งาน</nav><input type="text" id="username" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <nav>สิทธิการเข้าถึง</nav>
+                            <select name="setlevel" id="setlevel" class="form-select">
+                                <option value="user" selected>user</option>
+                                <option value="admin">admin</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <nav>รหัสผ่าน</nav><input type="password" id="passwd" class="form-control">
@@ -201,14 +225,28 @@ if (!empty($_SESSION['HN'])) {
 
                         <div class="col-md-2"></div>
                         <div class="col-md-2"></div>
+                   <?php 
+                 }
+                    ?>
+                        <div class="col-md-4">
+                            <?php
+                            if (isset($_GET['editu'])) {
+                            ?>
+                                <button onclick="update_data()" class="btn btn-outline-warning mt-3 w-100" id="">แก้ไขข้อมูล</button>
+                            <?php
+                            } else {
+                            ?>
+                                <button onclick="checkinfo()" class="btn btn-outline-success mt-3 w-100" id="">เพิ่มบัญชี</button>
+                            <?php
+                            }
+                            ?>
 
-                        <div class="col-md-4">
-                            <button onclick="checkinfo()" class="btn btn-success mt-3 w-100" id="">เพิ่มบัญชี</button>
+                            <nav style="color:red" name="noticfity"></nav>
                         </div>
                         <div class="col-md-4">
-                            <a class="btn btn-warning w-100 mt-3" href="register.php">รีเซ็ต</a>
+                            <a class="btn btn-info w-100 mt-3" href="register.php">รีเซ็ต</a>
                         </div>
-                        <nav style="color:red" name="noticfity"></nav>
+
                         <div class="col-md-2"></div>
                     </div>
 
@@ -238,25 +276,159 @@ if (!empty($_SESSION['HN'])) {
         <script src="https://unpkg.com/tippy.js@6"></script>
 </body>
 <script>
+      if(user_id){
+        getvalue();
+    }
+    var counter = 0;
+
     function checkinfo() {
+        counter = 0;
         let fullname = $('#fullname').val();
         let lastname = $('#lastname').val();
         let engfull = $('#engfull').val();
         let englast = $('#englast').val();
         let bday = $('#bday').val();
         let phone = $('#phone').val();
+        let email = $('#mail').val();
+        let job = $('#job').val();
         let username = $('#username').val();
         let passwd = $('#passwd').val();
         let c_passwd = $('#c_passwd').val();
-        checker(englast,noticfity,"hello");
+        let callname = $('#callname').val();
+        let setlevel = $('#setlevel').val();
+        checker(fullname, 'fullname');
+        checker(lastname, 'lastname');
+        checker(engfull, 'engfull');
+        checker(englast, 'englast');
+        checker(bday, 'bday');
+        checker(phone, 'phone');
+        checker(email, 'mail');
+        checker(job, 'job');
+        checker(username, 'username');
+        checker(passwd, 'passwd');
+        console.log(counter);
+        if (counter == 10) {
+            if (passwd == c_passwd) {
+                var res_json = {
+                    "fullname": fullname,
+                    "lastname": lastname,
+                    "engfull": engfull,
+                    "englast": englast,
+                    "bday": bday,
+                    "phone": phone,
+                    "email": email,
+                    "job": job,
+                    "username": username,
+                    "passwd": passwd,
+                    "callname": callname,
+                    "setlevel": setlevel
+                };
+                console.log(res_json);
+                res_json = JSON.stringify(res_json);
+                var http = new XMLHttpRequest();
+                var url = 'newpath.php';
+                var params = 'ddd=' + res_json;
+                http.open('POST', url, true);
+
+                //Send the proper header information along with the request
+                http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                http.onreadystatechange = function() { //Call a function when the state changes.
+                    if (http.readyState == 4 && http.status == 200) {
+                        console.log(http.responseText);
+                    }
+                }
+                http.send(params);
+
+            } else {
+                alert('รหีสผ่านไม่ตรงกัน')
+            }
+        }
     }
 
-    function checker(item,id, txt) {
+    function checker(item, id) {
         if (item) {
-            console.log("jj");
-            
+            counter++;
         } else {
-            document.getElementsByName('noticfity').href
+
+            document.getElementById(id).style.borderColor = "#FFAAAA";
+            document.getElementById(id).style.borderWidth = "2px";
+            //alarm.setAttribute("style", "borderColor:#FFAAAA;borderWidth = 2px");
+        }
+    }
+    function getvalue() {
+        if(user_id){
+            pre_select = document.getElementById("callname");
+            pre_op = pre_select.querySelectorAll("option");
+            for (var i = 0; i < pre_op.length; i++) {
+                console.log(pre_op[i].value+":"+user_pre);
+                if (pre_op[i].value == user_pre) {
+                    pre_op[i].selected = true;
+                 
+                } 
+            }
+            var bday = document.getElementById("bday");
+            bday.value = user_bday;
+        }
+    }
+    function update_data() {
+        counter = 0;
+        let fullname = $('#fullname').val();
+        let lastname = $('#lastname').val();
+        let engfull = $('#engfull').val();
+        let englast = $('#englast').val();
+        let bday = $('#bday').val();
+        let phone = $('#phone').val();
+        let email = $('#mail').val();
+        let job = $('#job').val();
+        let username = $('#username').val();
+        let passwd = $('#passwd').val();
+        let c_passwd = $('#c_passwd').val();
+        let callname = $('#callname').val();
+        checker(fullname, 'fullname');
+        checker(lastname, 'lastname');
+        checker(engfull, 'engfull');
+        checker(englast, 'englast');
+        checker(bday, 'bday');
+        checker(phone, 'phone');
+        checker(email, 'mail');
+        checker(job, 'job');
+        if(counter == 8){
+            var up_json = {
+                    "uid": user_id,
+                    "fullname": fullname,
+                    "lastname": lastname,
+                    "engfull": engfull,
+                    "englast": englast,
+                    "bday": bday,
+                    "phone": phone,
+                    "email": email,
+                    "job": job,
+                    "callname": callname,
+                };
+                console.log(up_json);
+                up_json = JSON.stringify(up_json);
+                var httpup = new XMLHttpRequest();
+                var url = 'newpath.php';
+                var params = 'update=' + up_json;
+                httpup.open('POST', url, true);
+
+                //Send the proper header information along with the request
+                httpup.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                httpup.onreadystatechange = function() { //Call a function when the state changes.
+                    if (httpup.readyState == 4 && httpup.status == 200) {
+                        console.log(httpup.responseText);
+                        
+                        if(httpup.responseText == 1){
+                            window.location.href="access.php";
+                        }
+                    }
+                }
+                httpup.send(params);
+        }else{
+            console.log(counter);
+            
         }
     }
 </script>

@@ -98,7 +98,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                 <div class="row">
                     <a href="index.php" class="choosed">
                         <div class="col-md-12 ">
-                          หน้าแรก
+                            หน้าแรก
                         </div>
                     </a>
                     <a href="estimate.php" class="now">
@@ -134,7 +134,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                         </a>
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
-                            จัดการสิทธิการรักษา
+                                จัดการสิทธิการรักษา
                             </div>
                         </a>
                     <?php } ?>
@@ -145,6 +145,55 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                 <div class="row" style="margin-left:5px;">
                     <!--interface สิทธิ์-->
                     <div class="col-md-12" style="margin-bottom:20px;">
+                        <?php
+                        $sqli = "SELECT v.HN_id as vid
+                         ,v.visit_name as vname,v.visit_address as vaddress
+                         ,v.visit_tel as vtel,v.uc_id as uc_id,v.visit_iden as viden ,u.uc_name as uname
+                          FROM visit v LEFT JOIN uc u ON v.uc_id = u.uc_id 
+                          WHERE HN_id = " . $_SESSION['HN'] . "";
+                        if ($res = mysqli_query($conn, $sqli)) {
+                            while ($row = mysqli_fetch_array($res)) {
+                                $vname = $row['vname'];
+                                $vaddress = $row['vaddress'];
+                                $vtel = $row['vtel'];
+                                $viden = $row['viden'];
+                                $uname = $row['uname'];
+                                ?>
+                                <script>
+                                    var uc_id = '<?php echo $row['uc_id'];?>';   
+                               
+                                </script>
+                                <?php
+                               
+                            }
+                        }
+                        ?>
+                        <table class="table table-borderless">
+                            <tbody id="idenTable">
+                                <tr>
+                                    <td><b>HN</b></td>
+                                    <td><?php echo  $_SESSION['HN']; ?></td>
+                                    <td><b>ชื่อ-นามสกุล</b></td>
+                                    <td><?php echo  $vname; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ที่อยู่</b></td>
+                                    <td><?php echo  $vaddress; ?></td>
+                                    <td><b>บัตรประชาชน</b></td>
+                                    <td><?php echo  $viden; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><b>เบอร์ติดต่อ</b></td>
+                                    <td><?php echo  $vtel; ?></td>
+                                    <td><b>สิทธิ์</b></td>
+                                    <td>
+                                    <?php echo  $uname; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!---<div class="col-md-12" style="margin-bottom:20px;">
                         <h5>สิทธิ์</h5>
                         <div class="row" id="p_box">
                             <div class="col-md-1"></div>
@@ -158,7 +207,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                                 <input type="radio" class="form-check-input privacy" value="UC003" name="privacy" id=""> OFC
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <hr>
                     <!--interface การวินิฉัยโรค-->
                     <div class="col-md-12">
@@ -711,7 +760,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
     }
 
     function sendData() { //บันทึกข้อมูลทั้งหมด
-        var privacy = getRadio('privacy');
+        var privacy = uc_id;
         var or_value = sendOR();
         var lab_value = sendLab();
         var rest_value = sendrest();

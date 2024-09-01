@@ -315,7 +315,7 @@ if (!isset($_GET['doc_id'])) {
                     </table>
                 </center>
                 <?php echo "*" . $warning ?>
-                <center id="signature" style="display: block;">
+                <center id="signature" style="display: none;">
 
                     <table class="table table-borderless w-100 mt-5">
                         <tbody>

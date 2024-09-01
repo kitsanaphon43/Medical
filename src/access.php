@@ -71,7 +71,7 @@ if (!empty($_SESSION['HN'])) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                                <a class="dropdown-item ditem" href="register.php?editu=<?php  echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                         </li>
                     </ul>
@@ -110,7 +110,7 @@ if (!empty($_SESSION['HN'])) {
                                 พิมพ์ใบประเมินราคา
                             </div>
                         </a>
-                       
+
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
@@ -121,21 +121,21 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <?php if($_SESSION['level'] == 'admin'){ ?>
+                        <?php if ($_SESSION['level'] == 'admin') { ?>
                             <center>
-                            <hr style="width:100px;">
-                        </center>
-                        <a href="access.php" class="now">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการเข้าถึง
-                            </div>
-                        </a>
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการรักษา
-                            </div>
-                        </a>
-                   <?php } ?>
+                                <hr style="width:100px;">
+                            </center>
+                            <a href="access.php" class="now">
+                                <div class="col-md-12 ">
+                                    จัดการสิทธิการเข้าถึง
+                                </div>
+                            </a>
+                            <a href="setmanager.php" class="choosed">
+                                <div class="col-md-12 ">
+                                    จัดการสิทธิการรักษา
+                                </div>
+                            </a>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -155,7 +155,9 @@ if (!empty($_SESSION['HN'])) {
                             <?php
                             $user_sql = "SELECT * FROM users";
                             if ($result = mysqli_query($conn, $user_sql)) {
+                                $i = 0;
                                 while ($row = mysqli_fetch_array($result)) {
+                                    $i++;
                             ?>
                                     <tr>
                                         <td><?php echo $row['user_id']; ?></td>
@@ -163,20 +165,19 @@ if (!empty($_SESSION['HN'])) {
                                         <td><?php echo $row['user_lname']; ?></td>
                                         <td><?php echo $row['job']; ?></td>
                                         <td>
-                                            <select class="form-select form-select-sm w" name="" id="">
+                                            <select class="form-select form-select-sm w" onclick="mem(this.value)" onchange="up_level('<?php echo 'newlevel' . $i ?>','<?php echo $row['user_id']; ?>')" name="" id="<?php echo "newlevel" . $i ?>">
                                                 <option value="user" <?php if ($row['level'] == 'user') {
                                                                             echo 'selected';
                                                                         } ?>>user</option>
                                                 <option value="admin" <?php if ($row['level'] == 'admin') {
                                                                             echo 'selected';
                                                                         } ?>>admin</option>
-                                              
-                                            </select>
 
+                                            </select>
                                         </td>
                                         <td width="15%">
-                                            <a href="register.php" class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
-                                            <a href="" class="btn mt-2 btn-outline-danger w-100">ลบบัญชี</a>
+                                            <a href="register.php?editu=<?php  echo $row['user_id']; ?>" class="btn btn-warning w-100">แก้ไขข้อมูลส่วนตัว</a>
+                                            <button onclick="delacc('<?php echo $row['user_id']; ?>')" class="btn mt-2 btn-outline-danger w-100">ลบบัญชี</button>
                                         </td>
                                     </tr>
                             <?php
@@ -244,11 +245,11 @@ if (!empty($_SESSION['HN'])) {
     }
 </script>
 <script>
-    if (ses) {
-        hn_search();
+    var oldlevel = "";
+    var status = "";
+    function mem(value) {
+        status = value;
     }
-
-
     function CaseTable(Orcase, table_id) {
         let path = Orcase;
         let rs = [];
@@ -280,27 +281,63 @@ if (!empty($_SESSION['HN'])) {
     }
 
 
-    function hn_search() {
-        var txt = document.getElementById('hn_id').value;
-        if (txt) {
-            console.log(txt);
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('idenTable').innerHTML = this.responseText;
-                    document.getElementById('tablezone').style.display = 'block';
+    function up_level(acc_id,value) {
+        var acc = acc_id;
+        var select = document.getElementById(acc);
+        var op = select.querySelectorAll('option');
+        var q = confirm("คุณต้องการเปลี่ยนระดับการเข้าถึง");
+        if (q) {
+            var newlevel = document.getElementById(acc).value;
+           
+            console.log(newlevel);
+            var http = new XMLHttpRequest();
+            var url = 'newpath.php';
+            var params = 'newlevel=' + newlevel+'&v='+value;
+            http.open('POST', url, true);
 
+            //Send the proper header information along with the request
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            http.onreadystatechange = function() { //Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    alert(http.responseText);
+                    location.reload();
                 }
             }
-            xmlhttp.open("GET", "path.php?hn_id=" + txt, true);
-            xmlhttp.send();
-        } else {
-            alert("กรุณากรอกรหัส HN เพื่อยืนยันตัวตน");
+            http.send(params);
+
+        } else if (q == false) {
+            for (var i = 0; i < op.length; i++) {
+                console.log(op[i].innerHTML);
+                if (op[i].value == status) {
+                    op[i].selected = true;
+                } else {
+                    console.log(op[i].value + "!=" + status);
+                }
+            }
         }
     }
 
-    function test() {
-        console.log("helloworld");
+    function delacc(user) {
+        var q = confirm("คุณต้องการลบบัญชีนี้จริงหรือไม่");
+        if (q) {
+            var http = new XMLHttpRequest();
+            var url = 'newpath.php';
+            var params = 'deluser=' + user;
+            http.open('POST', url, true);
+
+            //Send the proper header information along with the request
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            http.onreadystatechange = function() { //Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    alert(http.responseText);
+                    location.reload();
+                }
+            }
+            http.send(params);
+
+        } else {
+
+        }
     }
 </script>
 

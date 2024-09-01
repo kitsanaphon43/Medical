@@ -4,8 +4,9 @@
 <?php
 include("connect.php");
 session_start();
-if (empty($_SESSION['HN'])) {
-  header('Location:index.php');
+if (empty($_SESSION['fname']) && empty($_SESSION['level'])) {
+  echo $_SESSION['fname'];
+  header("location:login.php");
 }
 if (isset($_GET['er'])) {
   echo "<script>alert('ไฟล์ Excel นี้ไม่ถูกต้องตามฟอร์มที่กำหนด - กรุณาดาวน์โหลดฟอร์ม')</script>";

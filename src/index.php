@@ -108,7 +108,7 @@ if (!empty($_SESSION['HN'])) {
                                 พิมพ์ใบประเมินราคา
                             </div>
                         </a>
-                       
+
                         <a href="setmanager.php" class="choosed">
                             <div class="col-md-12 ">
                                 จัดการชุดผ่าตัด
@@ -119,21 +119,21 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <?php if($_SESSION['level'] == 'admin'){ ?>
+                        <?php if ($_SESSION['level'] == 'admin') { ?>
                             <center>
-                            <hr style="width:100px;">
-                        </center>
-                        <a href="access.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการเข้าถึง
-                            </div>
-                        </a>
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                            จัดการสิทธิการรักษา
-                            </div>
-                        </a>
-                   <?php } ?>
+                                <hr style="width:100px;">
+                            </center>
+                            <a href="access.php" class="choosed">
+                                <div class="col-md-12 ">
+                                    จัดการสิทธิการเข้าถึง
+                                </div>
+                            </a>
+                            <a href="privilege.php" class="choosed">
+                                <div class="col-md-12 ">
+                                    จัดการสิทธิการรักษา
+                                </div>
+                            </a>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -146,6 +146,16 @@ if (!empty($_SESSION['HN'])) {
                                 <div class="input-group-append">
                                     <input type="submit" class="btn btn-primary w-100" value="เลือก" name="hn_btn" id="hnclick" type="button">
                                 </div>
+                                <?php
+                                if (isset($_SESSION['HN'])) {
+                                ?>
+                                    <div class="input-group-append">
+                                        <a href="estimate.php" class="btn btn-success w-100">ประเมินค่ารักษา</a>
+                                    </div>
+                                <?php
+                                }
+                                ?>
+
                             </form>
                         </div>
                         <div class="col-md-9">
@@ -237,7 +247,7 @@ if (!empty($_SESSION['HN'])) {
                 <!---->
             </div>
         </div>
-         <!-- Boolstrap5.0.2 -->
+        <!-- Boolstrap5.0.2 -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

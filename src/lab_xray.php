@@ -1,8 +1,9 @@
 <?php
 include("connect.php");
 session_start();
-if (empty($_SESSION['HN'])) {
-    header('Location:index.php');
+if (empty($_SESSION['fname']) && empty($_SESSION['level'])) {
+    echo $_SESSION['fname'];
+    header("location:login.php");
 }
 ?>
 <!DOCTYPE html>
