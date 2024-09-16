@@ -5,6 +5,9 @@ if (empty($_SESSION['fname'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
 }
+$path_ss = pathinfo('C:\wamp64\www\medical\src\docs\uc_samrit.pdf');
+$path_ofc = pathinfo('C:\wamp64\www\medical\src\docs\Medical_guide_government officer_CGD_2553.pdf');
+$path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โรค-ลว13กพ67.pdf');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,12 +117,12 @@ if (empty($_SESSION['fname'])) {
                                     <tr>
                                         <td width="80%"><h2>สิทธิประกันสังคม (SS)</h2></td>
                                        <td rowspan="2">
-                                            <button class="btn btn-primary">ดูเกณฑ์</button>
+                                            <a class="btn btn-primary">ดูเกณฑ์</a>
                                             <button class="btn btn-success">อัปโหลด</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>fff</td>
+                                        <td><?php  echo $path_ss['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -133,12 +136,12 @@ if (empty($_SESSION['fname'])) {
                                     <tr>
                                         <td width="80%"><h2>สิทธิข้าราชการ (OFC)</h2></td>
                                        <td rowspan="2">
-                                            <button class="btn btn-primary">ดูเกณฑ์</button>
+                                            <a class="btn btn-primary">ดูเกณฑ์</a>
                                             <button class="btn btn-success">อัปโหลด</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>fff</td>
+                                        <td><?php  echo $path_ofc['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -152,12 +155,12 @@ if (empty($_SESSION['fname'])) {
                                     <tr>
                                         <td width="80%"><h2>สิทธิการรักษาตามนโยบายรัฐ (UC)</h2></td>
                                        <td rowspan="2">
-                                            <button class="btn btn-primary">ดูเกณฑ์</button>
+                                            <a class="btn btn-primary">ดูเกณฑ์</a>
                                             <button class="btn btn-success">อัปโหลด</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>fff</td>
+                                        <td><?php  echo $path_uc['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>

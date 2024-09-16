@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/s.css">
+  <link rel="stylesheet" href="css/s.css?t=<?php echo time() ?>">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -72,7 +72,7 @@ if (isset($_GET['id'])) {
         <div class="row">
           <a href="index.php" class="choosed">
             <div class="col-md-12 ">
-               หน้าแรก
+              หน้าแรก
             </div>
           </a>
           <a href="estimate.php" class="choosed">
@@ -108,7 +108,7 @@ if (isset($_GET['id'])) {
             </a>
             <a href="setmanager.php" class="choosed">
               <div class="col-md-12 ">
-              จัดการสิทธิการรักษา
+                จัดการสิทธิการรักษา
               </div>
             </a>
           <?php } ?>
@@ -239,18 +239,34 @@ if (isset($_GET['id'])) {
               </div>
 
               <div class="col-md-6">
-                <a class="btn btn-outline-danger btn-lg w-100" onclick=" delRow()"> ลบรายการ</a>
+                <a class="btn  btn-outline-primary  btn-lg w-100" href="items.php">เพิ่มหัตถการ</a>
               </div>
 
               <div class="col-md-6">
                 <a class="btn btn-outline-secondary btn-lg w-100" href="excel/sheets/OR-items.xlsx" style="margin-top: 20px;" download>ดาวน์โหลดแบบฟอร์ม</a>
               </div>
               <div class="col-md-6">
+                <a class="btn btn-danger btn-lg w-100" style="margin-top: 20px;" onclick="delRow()"> ลบรายการ</a>
+              </div>
+              <div class="col-md-12">
                 <a class="btn btn-success btn-lg w-100" style="margin-top: 20px;" onclick="editItemSet()">บันทึกการเปลี่ยนแปลง</a>
               </div>
             </div>
           </div>
 
+          <div class="col-md-12 " style="border: 1px solid gray;margin-top: 10px;">
+  <br>
+              <table class="table table-borderless">
+                <tbody style="text-align:center;">
+                  <tr>
+                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;SS</td>
+                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;OFC</td>
+                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;UC</td>
+                  </tr>
+                </tbody>
+              </table>
+      
+          </div>
         </div>
 
         <div class="col-md-7" style="margin-top:20px;">
