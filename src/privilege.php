@@ -128,7 +128,7 @@ $path_uc = pathinfo($set[1]);
                                         </td>
                                         <td rowspan="2">
                                         <a href="<?php  echo 'docs/'.$path_ss['filename'].'.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
-                                        <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
+                                        <input value="อัปโหลดเกณฑ์" type="file"  class="form-control w-50">
                                         </td>
                                     </tr>
                                     <tr>

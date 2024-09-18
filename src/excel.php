@@ -15,7 +15,8 @@ if (isset($_POST['import'])) {
         $tmp_name = $_FILES["fileload"]["name"];
         $path = $_FILES["fileload"]["tmp_name"];
         $setid = $_POST['importset'];
-        echo $setid;
+        echo 'ที่อยู่ ='.$path;
+        echo '&nbsp;ชื่อไฟล์ ='.$tmp_name;
         $loader = $reader->load($path);
         $sheet = $loader->getSheet(0);
         $row_length = $sheet->getHighestRow();
@@ -40,6 +41,7 @@ if (isset($_POST['import'])) {
                         "item_unitprice" => $data[$i][3],
                         "item_uc" => $data[$i][4],
                         "item_ofc" => $data[$i][5],
+                        "item_ss" => $data[$i][6],
                     ];
                     array_push($json, $row);
                 }
@@ -52,19 +54,23 @@ if (isset($_POST['import'])) {
                     $item_unit = $json[$i]['item_unitprice'];
                     $item_uc = $json[$i]['item_uc'];
                     $item_ofc = $json[$i]['item_ofc'];
+                    $item_ss = $json[$i]['item_ss'];
                     if (is_numeric($item_uc) == false) {
                         $item_uc = 0;
                     }
                     if (is_numeric($item_ofc) == false) {
                         $item_ofc = 0;
                     }
+                    if (is_numeric($item_ss) == false) {
+                        $item_ss = 0;
+                    }
                     $fsql = "SELECT count(item_code) as c_item FROM item WHERE item_code = '$item_code'";
 
                     $r = mysqli_fetch_assoc(mysqli_query($conn, $fsql));
                     if ($r['c_item'] < 1) {
-                        add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $conn);
+                        add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
                     } else {
-                        update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $conn);
+                        update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
                     }
                     add_set($setid, $item_code, $conn);
                 }
@@ -82,14 +88,15 @@ if (isset($_POST['import'])) {
         }
     }
 }
-function add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $conn)
+function add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn)
 {
     if ($item_code != "") {
         $item_unit = becomeNumber($item_unit, 0);
         $item_uc = becomeNumber($item_uc, 0);
         $item_ofc = becomeNumber($item_ofc, 0);
+        $item_ofc = becomeNumber($item_ss, 0);
         $sql = "INSERT INTO item VALUES ('$item_code','$item_name','$item_category','$item_unit','$item_uc
-    ','$item_ofc')";
+    ','$item_ofc','$item_ss')";
         echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo $item_code . ":success";
@@ -118,18 +125,20 @@ function add_set($set_id, $item_code, $conn)
         }
     }
 }
-function update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $conn)
+function update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn)
 {
     if ($item_code != "") {
         $item_unit = becomeNumber($item_unit, 0);
         $item_uc = becomeNumber($item_uc, 0);
         $item_ofc = becomeNumber($item_ofc, 0);
+        $item_ss = becomeNumber($item_ss, 0);
         $updatesql = "UPDATE item SET item_name='" . $item_name . "'
     ,item_name='" . $item_name . "'
     ,item_category='" . $item_category . "'
     ,item_unitprice='" . $item_unit . "'
     ,item_uc_price='" . $item_uc . "'
     ,item_ofc_price='" . $item_ofc . "'
+    ,item_ofc_price='" . $item_ss . "'
     WHERE item_code = '" . $item_code . "'";
 
         if (mysqli_query($conn, $updatesql)) {
