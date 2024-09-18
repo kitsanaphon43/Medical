@@ -130,9 +130,9 @@ if (!empty($_SESSION['HN'])) {
                                     จัดการสิทธิการเข้าถึง
                                 </div>
                             </a>
-                            <a href="setmanager.php" class="choosed">
+                            <a href="privilege.php" class="choosed">
                                 <div class="col-md-12 ">
-                                    จัดการสิทธิการรักษา
+                                 เกณฑ์การใช้สิทธิการรักษา
                                 </div>
                             </a>
                         <?php } ?>

@@ -5,9 +5,17 @@ if (empty($_SESSION['fname'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
 }
-$path_ss = pathinfo('C:\wamp64\www\medical\src\docs\uc_samrit.pdf');
-$path_ofc = pathinfo('C:\wamp64\www\medical\src\docs\Medical_guide_government officer_CGD_2553.pdf');
-$path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โรค-ลว13กพ67.pdf');
+$file_Sql = "SELECT `uc_path` FROM `uc` ";
+
+if ($rs = mysqli_query($conn, $file_Sql)) {
+    while ($row = mysqli_fetch_assoc($rs)) {
+        $set[] = $row['uc_path'];
+    }
+}
+
+$path_ss = pathinfo($set[3]);
+$path_ofc = pathinfo($set[2]);
+$path_uc = pathinfo($set[1]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +51,7 @@ $path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โร
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                                <a class="dropdown-item ditem" href="register.php?editu=<?php echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                         </li>
                     </ul>
@@ -100,9 +108,9 @@ $path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โร
                                     จัดการสิทธิการเข้าถึง
                                 </div>
                             </a>
-                            <a href="setmanager.php" class="now">
+                            <a href="privilege.php" class="now">
                                 <div class="col-md-12 ">
-                                    เกณฑ์การใช่สิทธิการรักษา
+                                    เกณฑ์การใช้สิทธิการรักษา
                                 </div>
                             </a>
                         <?php } ?>
@@ -115,14 +123,16 @@ $path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โร
                             <table border="0" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td width="80%"><h2>สิทธิประกันสังคม (SS)</h2></td>
-                                       <td rowspan="2">
-                                            <a class="btn btn-primary">ดูเกณฑ์</a>
-                                            <button class="btn btn-success">อัปโหลด</button>
+                                        <td width="80%">
+                                            <h2>สิทธิประกันสังคม (SS)</h2>
+                                        </td>
+                                        <td rowspan="2">
+                                        <a href="<?php  echo 'docs/'.$path_ss['filename'].'.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
+                                        <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><?php  echo $path_ss['basename'] ?></td>
+                                        <td><?php echo $path_ss['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -134,14 +144,16 @@ $path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โร
                             <table border="0" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td width="80%"><h2>สิทธิข้าราชการ (OFC)</h2></td>
-                                       <td rowspan="2">
-                                            <a class="btn btn-primary">ดูเกณฑ์</a>
-                                            <button class="btn btn-success">อัปโหลด</button>
+                                        <td width="80%">
+                                            <h2>สิทธิข้าราชการ (OFC)</h2>
+                                        </td>
+                                        <td rowspan="2">
+                                            <a href="<?php echo 'docs/' . $path_ofc['filename'] . '.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
+                                            <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><?php  echo $path_ofc['basename'] ?></td>
+                                        <td><?php echo $path_ofc['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -153,14 +165,16 @@ $path_uc= pathinfo('C:\wamp64\www\medical\src\docs\ประกาศMOU5 โร
                             <table border="0" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td width="80%"><h2>สิทธิการรักษาตามนโยบายรัฐ (UC)</h2></td>
-                                       <td rowspan="2">
-                                            <a class="btn btn-primary">ดูเกณฑ์</a>
-                                            <button class="btn btn-success">อัปโหลด</button>
+                                        <td width="80%">
+                                            <h2>สิทธิการรักษาตามนโยบายรัฐ (UC)</h2>
+                                        </td>
+                                        <td rowspan="2">
+                                            <a href="<?php echo 'docs/' . $path_uc['filename'] . '.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
+                                            <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><?php  echo $path_uc['basename'] ?></td>
+                                        <td><?php echo $path_uc['basename'] ?></td>
                                     </tr>
                                 </tbody>
                             </table>

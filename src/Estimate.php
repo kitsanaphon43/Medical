@@ -79,7 +79,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+                            <a class="dropdown-item ditem" href="register.php?editu=<?php  echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                         </li>
                     </ul>
@@ -132,11 +132,11 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                                 จัดการสิทธิการเข้าถึง
                             </div>
                         </a>
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการสิทธิการรักษา
-                            </div>
-                        </a>
+                        <a href="privilege.php" class="choosed">
+                                <div class="col-md-12 ">
+                                เกณฑ์การใช้สิทธิการรักษา
+                                </div>
+                            </a>
                     <?php } ?>
                 </div>
             </div>

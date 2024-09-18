@@ -52,7 +52,7 @@ if (isset($_GET['id'])) {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
               <div class="dropdown-menu" aria-labelledby="dropdownId">
-                <a class="dropdown-item ditem" href="#">แก้ไขข้อมูลส่วนตัว</a>
+              <a class="dropdown-item ditem" href="register.php?editu=<?php  echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
               </div>
             </li>
           </ul>
@@ -106,9 +106,9 @@ if (isset($_GET['id'])) {
                 จัดการสิทธิการเข้าถึง
               </div>
             </a>
-            <a href="setmanager.php" class="choosed">
+            <a href="privilege.php" class="choosed">
               <div class="col-md-12 ">
-                จัดการสิทธิการรักษา
+                เกณฑ์การใช่สิทธิการรักษา
               </div>
             </a>
           <?php } ?>
@@ -254,19 +254,19 @@ if (isset($_GET['id'])) {
             </div>
           </div>
 
-          <div class="col-md-12 " style="border: 1px solid gray;margin-top: 10px;">
-  <br>
-              <table class="table table-borderless">
-                <tbody style="text-align:center;">
-                  <tr>
-                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;SS</td>
-                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;OFC</td>
-                    <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;UC</td>
-                  </tr>
-                </tbody>
-              </table>
-      
-          </div>
+         <!--- <div class="col-md-12 " style="border: 1px solid gray;margin-top: 10px;">
+            <br>
+            <table class="table table-borderless">
+              <tbody style="text-align:center;">
+                <tr>
+                  <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;SS</td>
+                  <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;OFC</td>
+                  <td><input class="form-check-input big-checkbox" type="checkbox" name="" id="">&nbsp;UC</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>--->
         </div>
 
         <div class="col-md-7" style="margin-top:20px;">

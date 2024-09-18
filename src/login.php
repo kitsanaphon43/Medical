@@ -41,8 +41,7 @@ if(!empty($_SESSION['fname'])){ echo $_SESSION['fname']; header('location:index.
                               
                                 <center><input type="password"  name="passwd" class="form-control w-75" placeholder="รหัสผ่าน">
                                 <br>
-                                <input type="checkbox" onchange="showpwd()" name="" id=""> แสดงรหัสผ่าน
-                             <br>
+                               
                                     <input type="submit" name="login" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;">
                                  <?php
                                     if (isset($_GET['t'])) {

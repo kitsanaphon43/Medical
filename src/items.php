@@ -99,7 +99,7 @@ if (empty($_SESSION['fname'])) {
                             </a>
                             <a href="setmanager.php" class="now">
                                 <div class="col-md-12 ">
-                                    เกณฑ์การใช่สิทธิการรักษา
+                                เกณฑ์การใช้สิทธิการรักษา
                                 </div>
                             </a>
                         <?php } ?>
