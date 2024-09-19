@@ -102,4 +102,24 @@ if(isset($_POST['update'])){
         echo 1;
     }
 }
+if(isset($_POST['upload_rule'])){
+    if($_FILES["rule"]["error"] >= 0){
+        $path = $_FILES["rule"]["tmp_name"];
+        $name = $_FILES["rule"]["name"];
+        $target_id = $_POST['target_id'];
+        $newp = pathinfo("C:\wamp64\www\medical\src\docs");
+        $uprule_sql = "UPDATE `uc` SET `uc_path`= 'C:\\\\wamp64\\\\www\\\\medical\\\\src\\\\docs\\\\".$name."' WHERE `uc_id` = '".$target_id."'";
+
+        if(mysqli_query($conn,$uprule_sql) == 1){
+           move_uploaded_file($path, "docs\\".$name);
+            header("Location:privilege.php");
+           
+        }
+      
+       //rename($path, $newp['dirname']."\\".$name);
+    }else{
+       
+        header('Location:privilege.php');
+    }
+}
 ?>

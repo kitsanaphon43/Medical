@@ -127,8 +127,30 @@ $path_uc = pathinfo($set[1]);
                                             <h2>สิทธิประกันสังคม (SS)</h2>
                                         </td>
                                         <td rowspan="2">
-                                        <a href="<?php  echo 'docs/'.$path_ss['filename'].'.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
-                                        <input value="อัปโหลดเกณฑ์" type="file"  class="form-control w-50">
+                                            <a href="<?php echo 'docs/' . $path_ss['filename'] . '.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
+                                            <!-- Modal -->
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ss_model">
+                                                อัปโหลดเกณฑ์
+                                            </button>
+                                            <div class="modal fade" id="ss_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">เปลี่ยนเกณฑ์ใหม่</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="newpath.php" method="POST" enctype="multipart/form-data">
+                                                                <input type="text" value="UC004" name="target_id" style="display: none;">
+                                                                <input type="file" accept=".pdf" class="form-control" name="rule" id="rule">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                                                            <input type="submit" value="อัปโหลด" name="upload_rule" class="btn btn-primary">
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -149,7 +171,29 @@ $path_uc = pathinfo($set[1]);
                                         </td>
                                         <td rowspan="2">
                                             <a href="<?php echo 'docs/' . $path_ofc['filename'] . '.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
-                                            <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
+                                            <!-- Modal -->
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ofC_model">
+                                                อัปโหลดเกณฑ์
+                                            </button>
+                                            <div class="modal fade" id="ofC_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">เปลี่ยนเกณฑ์ใหม่</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="newpath.php" method="POST" enctype="multipart/form-data">
+                                                                <input type="text" value="UC003" name="target_id" style="display: none;">
+                                                                <input type="file" accept=".pdf" class="form-control" name="rule" id="rule">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                                                            <input type="submit" value="อัปโหลด" name="upload_rule" class="btn btn-primary">
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -170,7 +214,29 @@ $path_uc = pathinfo($set[1]);
                                         </td>
                                         <td rowspan="2">
                                             <a href="<?php echo 'docs/' . $path_uc['filename'] . '.pdf' ?>" class="btn btn-primary">ดูเกณฑ์</a>
-                                            <input value="อัปโหลดเกณฑ์" class="btn btn-success w-50">
+                                            <!-- Modal -->
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#uc_model">
+                                                อัปโหลดเกณฑ์
+                                            </button>
+                                            <div class="modal fade" id="uc_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">เปลี่ยนเกณฑ์ใหม่</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="newpath.php" method="POST" enctype="multipart/form-data">
+                                                                <input type="text" value="UC002" name="target_id" style="display: none;">
+                                                                <input type="file" accept=".pdf" class="form-control" name="rule" id="rule">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                                                            <input type="submit" value="อัปโหลด" name="upload_rule" class="btn btn-primary">
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                         </td>
                                     </tr>
                                     <tr>
