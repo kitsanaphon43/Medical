@@ -26,9 +26,9 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
     WHERE doc.doc_id = '" . $docid . "';";
     $lab_sql = "SELECT `Item_id` FROM docdetail WHERE `Item_id` LIKE '%LX%' AND `doc_id` ='" . $docid . "';";
     $set_sql = "SELECT DISTINCT `item_set` FROM `docdetail` WHERE `doc_id` ='" . $docid . "' AND `item_set` != '';";
-    $restquery = "SELECT `Item_id`,`Item_amount` FROM docdetail WHERE `Item_id` LIKE '%21%' AND `doc_id`='" . $docid . "'";
-    $orquery = "SELECT `Item_id`,`Item_amount` FROM docdetail WHERE `Item_name` LIKE '%ผ่าตัด%' AND `doc_id`='" . $docid . "'";
-    $othersql = "SELECT `Item_name`,`Item_amount`,`item_price` FROM `docdetail` WHERE `Item_id` LIKE '%OTHER%' AND `doc_id`='" . $docid . "';";
+    $restquery = "SELECT `Item_id`,`Item_min_amount`,`Item_max_amount` FROM docdetail WHERE `Item_id` LIKE '%21%' AND `doc_id`='" . $docid . "'";
+    $orquery = "SELECT `Item_id`,`Item_min_amount`,`Item_max_amount` FROM docdetail WHERE `Item_name` LIKE '%ผ่าตัด%' AND `doc_id`='" . $docid . "'";
+    $othersql = "SELECT `Item_name`,`Item_min_amount`,`Item_max_amount`,`item_price` FROM `docdetail` WHERE `Item_id` LIKE '%OTHER%' AND `doc_id`='" . $docid . "';";
     if ($rs = mysqli_query($conn, $viewsql)) {
         $r = mysqli_fetch_assoc($rs);
         $sesprivacy = $r['doc_privacy'];
@@ -347,8 +347,11 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                                                     <label> <?php echo $row['item_unitprice'] . " บาท" ?> </label>
                                                 </td>
 
-                                                <td style="text-align:center;">จำนวน</td>
-                                                <td width="15%"><input type="number" min="1" id="<?php echo 'rest_date' . $i ?>" class="form-control w-100" disabled></td>
+                                                <td style="text-align:center;">จำนวนต่ำสุด</td>
+                                                <td width="15%"><input type="number" min="1" id="<?php echo 'rest_date_min' . $i ?>" class="form-control w-100" disabled></td>
+                                                <td>คืน</td>
+                                                <td style="text-align:center;">จำนวนสูงสุด</td>
+                                                <td width="15%"><input type="number" min="1" id="<?php echo 'rest_date_max' . $i ?>" class="form-control w-100" disabled></td>
                                                 <td>คืน</td>
                                             </tr>
 
@@ -384,8 +387,11 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                                                     <label> <?php echo $row['item_unitprice'] . " บาท" ?> </label>
                                                 </td>
 
-                                                <td style="text-align:center;">จำนวน</td>
-                                                <td width="15%"><input type="number" min="1" id="<?php echo 'room_date' . $i ?>" class="form-control w-100" disabled></td>
+                                                <td style="text-align:center;">จำนวนต่ำสุด</td>
+                                                <td width="15%"><input type="number" min="1" id="<?php echo 'room_date_min' . $i ?>" class="form-control w-100" disabled></td>
+                                                <td>ครั้ง</td>
+                                                <td style="text-align:center;">จำนวนสูงสุด</td>
+                                                <td width="15%"><input type="number" min="1" id="<?php echo 'room_date_max' . $i ?>" class="form-control w-100" disabled></td>
                                                 <td>ครั้ง</td>
                                             </tr>
                                     <?php
@@ -410,12 +416,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                                             <td width="10%"><button class="btn btn-danger">ยกเลิก</button></td>
                                         </tr>
                                     </tbody>
-
-
                                 </table>
-
-
-
                             </div>
                         </div>
                     </div>
@@ -742,20 +743,29 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
         xmlhttp.send();
     }
 
-    function data_interface(checkbox, setamount) { //interface disabled form
+    function data_interface(checkbox, setamount1,setamount2) { //interface disabled form
         var data_row = document.getElementById(checkbox);
-        var amount = 1;
-        if (setamount != 0) {
-            amount = setamount;
+        var amount1 = 1;
+        var amount2 = 1;
+        if (setamount1 != 0) {
+            amount1 = setamount1;
+        }
+        if (setamount2 != 0) {
+            amount2 = setamount2;
         }
         var data_mark = data_row.getElementsByTagName('input');
         var data_select = data_row.getElementsByTagName('select');
         if (data_mark[0].checked == true) {
             data_mark[1].disabled = false;
-            data_mark[1].value = amount;
+            data_mark[1].value = amount1;
+            data_mark[2].disabled = false;
+            data_mark[2].value = amount2;
+
         } else {
             data_mark[1].disabled = true;
             data_mark[1].value = null;
+            data_mark[2].disabled = true;
+            data_mark[2].value = null;
         }
     }
 
@@ -840,13 +850,15 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
             var num = 0;
             for (var i = 1; i < rest_check.length; i++) {
                 var findid = rest_tr[i - 1].id;
-                var rest_date = document.getElementById("rest_date" + i);
+                var rest_date_min = document.getElementById("rest_date_min" + i);
+                var rest_date_max = document.getElementById("rest_date_max" + i);
                 var rest_text = document.querySelectorAll("#" + findid + " label");
                 //console.log(i);
                 if (rest_check[i].checked == true) {
                     rest_data[num] = {
                         "id": rest_check[i].value,
-                        "restday": rest_date.value
+                        "min_restday": rest_date_min.value,
+                        "max_restday": rest_date_max.value
                     };
                     num++;
                 }
@@ -866,13 +878,15 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
             var num = 0;
             for (var i = 1; i < room_check.length; i++) {
                 var roomid = room_tr[i - 1].id;
-                var room_date = document.getElementById("room_date" + i);
+                var room_date_min = document.getElementById("room_date_min" + i);
+                var room_date_max = document.getElementById("room_date_max" + i);
                 var room_text = document.querySelectorAll("#" + roomid + " label");
                 // console.log(i);
                 if (room_check[i].checked == true) {
                     room_data[num] = {
                         "id": room_check[i].value,
-                        "amount": room_date.value
+                        "min_amount": room_date_min.value,
+                        "max_amount": room_date_max.value
                     };
                     num++;
                 }
@@ -912,14 +926,14 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
         <?php if (isset($sesprivacy)) { ?>
             sesprivacy = "<?php echo $sesprivacy; ?>";
         <?php   } ?>
-        if (sesprivacy != "") {
+      /*  if (sesprivacy != "") {
             var p_btn = p_box.querySelectorAll("#p_box input[name='privacy']");
             for (var i = 0; i < p_btn.length; i++) {
                 if (p_btn[i].value == sesprivacy) {
                     p_btn[i].checked = true;
                 }
             }
-        }
+        }*/
         ///item_set settings
         <?php if (isset($sesprivacy)) { ?>
             var sesset = '<?php echo $sesset; ?>'
@@ -967,7 +981,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                 for (var j = 1; j < restdiv.length; j++) {
                     if (restdiv[j].value == sesrest[i]['Item_id']) {
                         restdiv[j].checked = true;
-                        data_interface('rest_item' + j, sesrest[i]['Item_amount']);
+                        data_interface('rest_item' + j, sesrest[i]['Item_min_amount'], sesrest[i]['Item_max_amount']);
                     }
                 }
             }
@@ -987,7 +1001,7 @@ if (isset($_GET['doc_id'])) { //// ดึงข้อมูลเอกสาร
                 for (var j = 1; j < ORdiv.length; j++) {
                     if (ORdiv[j].value == sesOR[i]['Item_id']) {
                         ORdiv[j].checked = true;
-                        data_interface('room_item' + j, sesOR[i]['Item_amount']);
+                        data_interface('room_item' + j, sesOR[i]['Item_min_amount'], sesOR[i]['Item_max_amount']);
                     }
                 }
             }

@@ -313,7 +313,8 @@ if (isset($_GET['key']) && isset($_GET['lab_id'])) {
 
 if (isset($_GET['j']) && isset($_GET['hndoc'])) {
     $j = $_GET['j'];
-    $stack = 0;
+    $min_stack = 0;
+    $max_stack = 0;
     $js = json_decode($j, true); //GET ALL DATA FROM estimate form
     ///////////////////////CREATE DOCUMENTS/////////////////////////////////////////
 
@@ -341,7 +342,7 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
         for ($i = 0; $i < $or_c; $i++) {
             $vdata = $js['or_value'][$i];
             $sql = "SELECT s.item_code,i.item_name,s.set_id,i.item_category
-        ,i.item_unitprice,s.std_amount,i.item_uc_price,i.item_ofc_price 
+        ,i.item_unitprice,s.std_amount,i.item_uc_price,i.item_ofc_price,i.item_ss_price
         FROM set_detail s LEFT JOIN item i ON s.item_code = i.item_code WHERE s.set_id = '" . $vdata . "';";
             if ($res = mysqli_query($conn, $sql)) {
                 while ($row = mysqli_fetch_array($res, true)) {
@@ -359,18 +360,22 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
                     $or[$i]['set_id'],
                     $or[$i]['item_category'],
                     $or[$i]['std_amount'],
+                    $or[$i]['std_amount'],
                     $or[$i]['item_unitprice'],
                     $or[$i]['item_uc_price'],
                     $or[$i]['item_ofc_price'],
+                    $or[$i]['item_ss_price'],
+                    $itemtotal,
                     $itemtotal,
                     $conn
                 );
-                $stack += $itemtotal;
+                $min_stack += $itemtotal;
+                $max_stack += $itemtotal;
             }
         }
         ////////////////////////////LAB X-RAY////////////////////////////////////
         $lab_c = count($js['lab_value']);
-        echo "count:" . $lab_c;
+        //echo "count:" . $lab_c;
 
         if ($lab_c != 0) {
             for ($i = 0; $i < $lab_c; $i++) {
@@ -392,19 +397,23 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
                     NULL,
                     $lab[$i][2],
                     '1',
+                    '1',
                     $lab[$i][3],
                     0,
                     0,
+                    0,
+                    $itemtotal,
                     $itemtotal,
                     $conn
                 );
-                $stack += $itemtotal;
+                $min_stack += $itemtotal;
+                $max_stack += $itemtotal;
             }
         }
     }
     //////////////////////////ห้องพักผู้ป่วย//////////////////////////////////////
     $rest_c = count($js['rest_value']);
-    echo "count:" . $rest_c;
+    //echo "count:" . $rest_c;
     for ($i = 0; $i < $rest_c; $i++) {
         $restsql = "SELECT * FROM item WHERE item_code = '" . $js['rest_value'][$i]['id'] . "';";
         if ($res = mysqli_query($conn, $restsql)) {
@@ -415,28 +424,33 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
     }
 
     for ($i = 0; $i < $rest_c; $i++) {
-        $itemtotal = $rest[$i]['item_unitprice'] * $js['rest_value'][$i]['restday'];
+        $item_mintotal = $rest[$i]['item_unitprice'] * $js['rest_value'][$i]['min_restday'];
+        $item_maxtotal = $rest[$i]['item_unitprice'] * $js['rest_value'][$i]['max_restday'];
         insert_item(
             $doc_id,
             $rest[$i]['item_code'],
             $rest[$i]['item_name'],
             NULL,
             $rest[$i]['item_category'],
-            $js['rest_value'][$i]['restday'],
+            $js['rest_value'][$i]['min_restday'],
+            $js['rest_value'][$i]['max_restday'],
             $rest[$i]['item_unitprice'],
             $rest[$i]['item_uc_price'],
             $rest[$i]['item_ofc_price'],
-            $itemtotal,
+            $rest[$i]['item_ss_price'],
+            $item_mintotal,
+            $item_maxtotal,
             $conn
         );
 
-        $stack += $itemtotal;
+        $min_stack += $item_mintotal;
+        $max_stack += $item_maxtotal;
     }
 
 
     //////////////////////////ห้องผ่าตัด//////////////////////////////////////
     $room_c = count($js['room_value']);
-    echo "<br>count:" . $room_c;
+    //echo "<br>count:" . $room_c;
     for ($i = 0; $i < $room_c; $i++) {
         $roomsql = "SELECT * FROM item WHERE item_code = '" . $js['room_value'][$i]['id'] . "'";
         if ($res = mysqli_query($conn, $roomsql)) {
@@ -446,21 +460,26 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
         }
     }
     for ($i = 0; $i < $room_c; $i++) {
-        $itemtotal = $room[$i]['item_unitprice'] * $js['room_value'][$i]['amount'];
+        $item_mintotal = $room[$i]['item_unitprice'] * $js['room_value'][$i]['min_amount'];
+        $item_maxtotal = $room[$i]['item_unitprice'] * $js['room_value'][$i]['max_amount'];
         insert_item(
             $doc_id,
             $room[$i]['item_code'],
             $room[$i]['item_name'],
             NULL,
             $room[$i]['item_category'],
-            $js['room_value'][$i]['amount'],
+            $js['room_value'][$i]['min_amount'],
+            $js['room_value'][$i]['max_amount'],
             $room[$i]['item_unitprice'],
             $room[$i]['item_uc_price'],
             $room[$i]['item_ofc_price'],
-            $itemtotal,
+            $room[$i]['item_ss_price'],
+            $item_mintotal,
+            $item_maxtotal,
             $conn
         );
-        $stack += $itemtotal;
+        $min_stack += $item_mintotal;
+        $max_stack += $item_maxtotal;
     }
 
     //////////////////////////OTHER//////////////////////////////////////
@@ -481,29 +500,37 @@ if (isset($_GET['j']) && isset($_GET['hndoc'])) {
             null,
             '',
             $js['other_value'][$i]['amount'],
+            $js['other_value'][$i]['amount'],
             $js['other_value'][$i]['price'],
             0,
             0,
+            0,
+            $itemtotal,
             $itemtotal,
             $conn
         );
-        $stack += $itemtotal;
+        $min_stack += $itemtotal;
+        $max_stack += $itemtotal;
     }
+   // echo $js['privacy'];
     if ($js['privacy'] != "UC001") {
         if ($js['privacy'] == "UC002") {
             $privacyAllcost = "SELECT SUM(`item_uc_price`) as 'p_total' FROM docdetail WHERE `doc_id` ='" . $doc_id . "';";
         }else if($js['privacy'] == "UC003"){
             $privacyAllcost = "SELECT SUM(`item_ofc_price`) as 'p_total' FROM docdetail WHERE `doc_id` ='" . $doc_id . "';";
+        }else if($js['privacy'] == "UC004"){
+            $privacyAllcost = "SELECT SUM(`item_ss_price`) as 'p_total' FROM docdetail WHERE `doc_id` ='" . $doc_id . "';";
         }
         if ($row = mysqli_fetch_assoc(mysqli_query($conn, $privacyAllcost))) {
             $p_total = $row['p_total'];
         }
+    }else{
+        $p_total = 0;
     }
     $warning = $js['warning'];
-        echo $warning;
-    $updatetotal = "UPDATE docestimate SET doc_total = '" . $stack . "',doc_p_total ='".$p_total."',doc_noti = '".$warning."' WHERE doc_id = '" . $doc_id . "';";
+       // echo $warning;
+    $updatetotal = "UPDATE docestimate SET doc_min_total = '" . $min_stack . "',doc_max_total = '" . $max_stack . "',doc_p_total ='".$p_total."',doc_noti = '".$warning."' WHERE doc_id = '" . $doc_id . "';";
     if (mysqli_query($conn, $updatetotal)) {
-       
         header("location:appraisal.php?doc_id=" . $doc_id."&warning=" . $warning);
     }
 }
@@ -525,16 +552,16 @@ if (isset($_GET['select'])) {
     $_SESSION['newlab'] = null;
 }
 
-function insert_item($doc_id, $Item_id, $Item_name, $Item_set, $Item_type, $Item_amount, $item_price, $item_uc_price, $item_ofc_price, $detail_total, $conn)
+function insert_item($doc_id, $Item_id, $Item_name, $Item_set, $Item_type, $Item_min_amount, $Item_max_amount, $item_price, $item_uc_price, $item_ofc_price, $item_ss_price, $detail_min_total, $detail_max_total, $conn)
 {
 
     $insert = "INSERT INTO `docdetail`(`doc_id`
-    , `Item_id`, `Item_name`, `Item_set`, `Item_type`, `Item_amount`, `item_price`
-    , `item_uc_price`, `item_ofc_price`, `detail_total`) 
+    , `Item_id`, `Item_name`, `Item_set`, `Item_type`, `Item_min_amount`, `Item_max_amount`, `item_price`
+    , `item_uc_price`, `item_ofc_price`, `item_ss_price`, `detail_min_total`, `detail_max_total`) 
     VALUES ('" . $doc_id . "','" . $Item_id . "','" . htmlentities($Item_name) . "','" . $Item_set . "'
-    ,'" . $Item_type . "','" . $Item_amount . "','" . $item_price . "','" . $item_uc_price . "'
-    ,'" . $item_ofc_price . "','" . $detail_total . "');";
-
+    ,'" . $Item_type . "','" . $Item_min_amount . "','" . $Item_max_amount . "','" . $item_price . "','" . $item_uc_price . "'
+    ,'" . $item_ofc_price . "','" . $item_ss_price . "','" . $detail_min_total . "','" . $detail_max_total . "');";
+//echo $insert;
     if (mysqli_query($conn, $insert) == true) {
         // echo $Item_id . ":Success" . "<br>";
     }

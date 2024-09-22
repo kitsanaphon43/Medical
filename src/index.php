@@ -203,7 +203,7 @@ if (!empty($_SESSION['HN'])) {
                         <tbody id="history">
                             <?php
                             if (!empty($hnid)) {
-                                $sql = "SELECT d.doc_id,d.doc_no,d.doc_name,uc.uc_name,v.HN_id,d.doc_total,d.doc_date,d.doc_status
+                                $sql = "SELECT d.doc_id,d.doc_no,d.doc_name,uc.uc_name,v.HN_id,d.doc_min_total,d.doc_max_total,d.doc_date,d.doc_status
                                     FROM docestimate d LEFT JOIN visit v ON d.HN_id = v.HN_id LEFT JOIN uc 
                                     ON d.doc_privacy = uc.uc_id
                                     WHERE d.HN_id = '" . $hnid . "'";
@@ -211,8 +211,10 @@ if (!empty($_SESSION['HN'])) {
                                     while ($row = mysqli_fetch_array($res)) {
                             ?>
                                         <script>
-                                            var doc_total = <?php echo $row['doc_total']; ?>;
-                                            doc_total = doc_total.toLocaleString();
+                                            var doc_min_total = <?php echo $row['doc_min_total']; ?>;
+                                            doc_min_total = doc_min_total.toLocaleString();
+                                            var doc_max_total = <?php echo $row['doc_max_total']; ?>;
+                                            doc_max_total = doc_max_total.toLocaleString();
                                         </script>
                                         <tr>
                                             <td width="15%"><?php echo $row['doc_id'] ?></td>
@@ -220,7 +222,7 @@ if (!empty($_SESSION['HN'])) {
                                             <td width="15%"><?php echo $row['doc_name'] ?></td>
                                             <td width="5%"><?php echo $row['uc_name'] ?></td>
                                             <td width="15%" style="text-align: right;">
-                                                <?php echo number_format($row['doc_total']) . ' บาท';  ?>
+                                                <?php echo number_format($row['doc_min_total']).' - '.number_format($row['doc_max_total']) . ' บาท';  ?>
                                             </td>
                                             <td style="text-align: right;" width="20%"><?php echo $row['doc_date'] ?></td>
                                             <td width="10%">

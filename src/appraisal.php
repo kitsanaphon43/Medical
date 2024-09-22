@@ -2,12 +2,12 @@
 include("connect.php");
 session_start();
 if (!isset($_GET['doc_id'])) {
-    header('Location:index.php');
+    // header('Location:index.php');
 } else {
     $doc_id = $_GET['doc_id'];
 
     $docsql = "SELECT `doc_id`, `doc_no`, uc.uc_name, `HN_id`
-    , `doc_total`, `doc_date`, `doc_p_total`,`doc_noti` FROM `docestimate` 
+    , `doc_min_total`, `doc_max_total`, `doc_date`, `doc_p_total`,`doc_noti` FROM `docestimate` 
     LEFT JOIN uc ON docestimate.doc_privacy = uc.uc_id 
     WHERE doc_id='" . $doc_id . "'";
     if ($result = mysqli_query($conn, $docsql)) {
@@ -19,7 +19,7 @@ if (!isset($_GET['doc_id'])) {
     }
     $sheet = $doc_id . '_' . $doc_no;
     $hnsql = "SELECT `HN_id`, `visit_name`, `visit_iden`
- , `visit_address`, `visit_tel`FROM visit 
+ , `visit_address`, `visit_tel`, `uc_id`FROM visit 
  WHERE HN_id = '" . $_SESSION['HN'] . "';";
     if ($res = mysqli_query($conn, $hnsql)) {
         while ($row = mysqli_fetch_array($res)) {
@@ -28,6 +28,7 @@ if (!isset($_GET['doc_id'])) {
             $visit_address = $row['visit_address'];
             $visit_iden = $row['visit_iden'];
             $visit_tel = $row['visit_tel'];
+            $visit_uc = $row['uc_id'];
         }
     }
     $setsql = "SELECT DISTINCT `item_set`,s.set_name FROM `docdetail` LEFT JOIN standardsetor s ON `item_set` = s.set_id WHERE doc_id='" . $doc_id . "'";
@@ -47,27 +48,34 @@ if (!isset($_GET['doc_id'])) {
 
     for ($i = 0; $i < count($set); $i++) {
         $itemsql = "SELECT `Item_id`
-                            , `Item_name`, `Item_type`, `Item_amount`
-                            , `item_price`, `item_uc_price`, `item_ofc_price`
-                            , `detail_total`,d.doc_total,d.doc_name FROM `docdetail` LEFT JOIN docestimate d ON docdetail.doc_id = d.doc_id
+                            , `Item_name`, `Item_type`, `Item_min_amount`, `Item_max_amount`
+                            , `item_price`, `item_uc_price`, `item_ofc_price`, `item_ss_price`
+                            , `detail_min_total`, `detail_max_total`,d.doc_min_total,d.doc_max_total,d.doc_name FROM `docdetail` LEFT JOIN docestimate d ON docdetail.doc_id = d.doc_id
                              WHERE docdetail.doc_id = '" . $doc_id . "' AND item_set ='" . $set[$i] . "';";
         if ($rs = mysqli_query($conn, $itemsql)) {
             while ($row = mysqli_fetch_assoc($rs)) {
                 $item_id[$i][] = $row['Item_id'];
                 $Item_name[$i][] = $row['Item_name'];
                 $Item_type[$i][] = $row['Item_type'];
-                $Item_amount[$i][] = $row['Item_amount'];
+                $Item_min_amount[$i][] = $row['Item_min_amount'];
+                $Item_max_amount[$i][] = $row['Item_max_amount'];
                 $item_price[$i][] = $row['item_price'];
                 $item_uc_price[$i][] = $row['item_uc_price'];
                 $item_ofc_price[$i][] = $row['item_ofc_price'];
-                $detail_total[$i][] = $row['detail_total'];
-                $doc_total = $row['doc_total'];
+                $item_ss_price[$i][] = $row['item_ss_price'];
+                $detail_min_total[$i][] = $row['detail_min_total'];
+                $detail_max_total[$i][] = $row['detail_max_total'];
+                $doc_min_total = $row['doc_min_total'];
+                $doc_max_total = $row['doc_max_total'];
                 $doc_name = $row['doc_name'];
             }
         }
     }
-    $sumarycost = $doc_total - $doc_p_total;
+   // echo $doc_min_total ."/". $doc_p_total;
+    $sumary_mincost = ($doc_min_total + $doc_p_total);
+    $sumary_maxcost = ($doc_max_total + $doc_p_total);
     $num = 0;
+   
 } ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +113,7 @@ if (!isset($_GET['doc_id'])) {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                    <a class="dropdown-item ditem" href="register.php?editu=<?php  echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
+                                        <a class="dropdown-item ditem" href="register.php?editu=<?php echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
                                     </div>
                                 </li>
                             </ul>
@@ -121,7 +129,7 @@ if (!isset($_GET['doc_id'])) {
                 <div class="row">
                     <a href="index.php" class="choosed">
                         <div class="col-md-12 ">
-                             หน้าแรก
+                            หน้าแรก
                         </div>
                     </a>
                     <a href="estimate.php" class="choosed">
@@ -156,10 +164,10 @@ if (!isset($_GET['doc_id'])) {
                             </div>
                         </a>
                         <a href="privilege.php" class="choosed">
-                                <div class="col-md-12 ">
+                            <div class="col-md-12 ">
                                 เกณฑ์การใช้สิทธิการรักษา
-                                </div>
-                            </a>
+                            </div>
+                        </a>
                     <?php } ?>
                 </div>
             </div>
@@ -209,11 +217,25 @@ if (!isset($_GET['doc_id'])) {
                     <table id="summary" class="table table-borderless" style="width:100%;">
                         <thead style="text-align: center;">
                             <tr>
-                                <th width="1%">ลำดับ</th>
-                                <th width="15%">รายการ</th>
-                                <th width="2%">ราคาต่อชิ้น</th>
-                                <th width="1%">จำนวน</th>
-                                <th width="2%">จำนวนเงิน</th>
+
+
+                            <tr>
+                                <th width="1%" rowspan="2">ลำดับ</th>
+                                <th width="20%" rowspan="2">รายการ</th>
+                                <th width="2%" rowspan="2">ราคาต่อชิ้น</th>
+                                <th width="5%" colspan="2">จำนวน</th>
+                                <th width="5%" colspan="2">ราคา </th>
+                                <th width="5%" rowspan="2">เบิกได้</th>
+                            </tr>
+                            <tr>
+                                <th width="2%">ต่ำสุด</th>
+                                <th width="2%">สูงสุด </th>
+                                <th width="2%">ต่ำสุด</th>
+                                <th width="2%">สูงสุด </th>
+                              
+                        
+                            </tr>
+                            </th>
                             </tr>
                         </thead>
 
@@ -222,11 +244,11 @@ if (!isset($_GET['doc_id'])) {
                             for ($i = 0; $i < count($set); $i++) { ?>
                                 <tr>
                                     <?php if ($set_name[$i] != '') { ?>
-                                        <td colspan="6" id="head">
+                                        <td colspan="9" id="head">
                                             <?php echo 'ชุดผ่าตัด ' . $set_name[$i] ?>
                                         </td>
                                     <?php } else { ?>
-                                        <td colspan="6" id="head">
+                                        <td colspan="9" id="head">
                                             <?php echo "ค่าจิปาถะและค่าบริการอื่นๆ" ?>
                                         </td>
                                     <?php } ?>
@@ -234,18 +256,51 @@ if (!isset($_GET['doc_id'])) {
                                 <?php
                                 for ($a = 0; $a < count($item_id[$i]); $a++) {
                                     $num++;
-
+                                    
+                                    if($visit_uc == "UC002"){
+                                        ?>
+                                        <script>
+                                              var uc_cost = <?php echo  $item_uc_price[$i][$a]; ?>;
+                                        </script>
+                                        <?php
+                                    }else if($visit_uc == "UC003"){
+                                        ?>
+                                        <script>
+                                              var uc_cost = <?php echo  $item_ofc_price[$i][$a]; ?>;
+                                        </script>
+                                        <?php
+                                    }else if($visit_uc == "UC004"){
+                                        ?>
+                                        <script>
+                                              var uc_cost = <?php echo  $item_ss_price[$i][$a]; ?>;
+                                        </script>
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <script>
+                                              var uc_cost = 0;
+                                        </script>
+                                        <?php
+                                    }
                                 ?>
                                     <script>
+                                        
                                         var i_price = <?php echo  $item_price[$i][$a]; ?>;
-                                        var i_total = <?php echo $detail_total[$i][$a]; ?>;
-                                        var d_total = <?php echo  $doc_total; ?>;
-                                        var dp_total = <?php echo  $sumarycost; ?>;
+                                        var min_total = <?php echo $detail_min_total[$i][$a]; ?>;
+                                        var max_total = <?php echo $detail_max_total[$i][$a]; ?>;
+                                        var d_mintotal = <?php echo  $doc_min_total; ?>;
+                                        var d_maxtotal = <?php echo  $doc_max_total; ?>;
+                                        var dp_mintotal = <?php echo  $sumary_mincost; ?>;
+                                        var dp_maxtotal = <?php echo  $sumary_maxcost; ?>;
                                         var doc_p_total = <?php echo  $doc_p_total; ?>;
+                                        uc_cost = uc_cost.toLocaleString();
                                         i_price = i_price.toLocaleString();
-                                        i_total = i_total.toLocaleString();
-                                        d_total = d_total.toLocaleString();
-                                        dp_total = dp_total.toLocaleString();
+                                        min_total = min_total.toLocaleString();
+                                        max_total = max_total.toLocaleString();
+                                        d_mintotal = d_mintotal.toLocaleString();
+                                        d_maxtotal = d_maxtotal.toLocaleString();
+                                        dp_mintotal = dp_mintotal.toLocaleString();
+                                        dp_maxtotal = dp_maxtotal.toLocaleString();
                                         doc_p_total = doc_p_total.toLocaleString();
                                     </script>
                                     <tr>
@@ -264,60 +319,70 @@ if (!isset($_GET['doc_id'])) {
                                         </td>
                                         <td style="text-align:right">
                                             <script>
-                                                document.write(i_price)
+                                                document.write(i_price);
                                             </script>
                                         </td>
                                         <td style="text-align:right">
-                                            <?php echo $Item_amount[$i][$a] ?>
+                                            <?php echo $Item_min_amount[$i][$a] ?>
+                                        </td>
+                                        <td style="text-align:right">
+                                            <?php echo $Item_max_amount[$i][$a] ?>
                                         </td>
                                         <td style="text-align:right">
                                             <script>
-                                                document.write(i_total)
+                                                document.write(min_total);
                                             </script>
                                         </td>
-
+                                        <td style="text-align:right">
+                                            <script>
+                                                document.write(max_total);
+                                            </script>
+                                        </td>
+                                        <td style="text-align:right">
+                                            <script>
+                                                document.write(uc_cost);
+                                            </script>
+                                        </td>
+                                      
                                     </tr>
                             <?php
                                 }
                             }
                             ?>
                             <tr style="border-top: 1px solid gray">
-                                <td colspan="4" style="text-align: right;">ราคารวมประมาณ</td>
+                                <td colspan="5" style="text-align: right;">ราคารวมประมาณ</td>
                                 <td style="text-align: right;">
                                     <script>
-                                        document.write(d_total + " บาท")
+                                        document.write(d_mintotal + " บาท")
                                     </script>
                                 </td>
-
-                            </tr>
-                            <tr style="border-top: 1px solid gray">
-                                <td colspan="4" style="text-align: right;">ราคาเมื่อใช้สิทธิเบิกได้</td>
                                 <td style="text-align: right;">
                                     <script>
-                                        document.write(dp_total + " บาท")
+                                        document.write(d_maxtotal + " บาท")
                                     </script>
                                 </td>
-
-                            </tr>
-                            <tr style="border-top: 1px solid gray">
-                                <td colspan="4" style="text-align: right;">ราคาที่สิทธิเบิกไม่ได้</td>
                                 <td style="text-align: right;">
                                     <script>
                                         document.write(doc_p_total + " บาท")
                                     </script>
                                 </td>
-
                             </tr>
+                            
+                           
                         </tbody>
                         <tfoot>
                             <tr></tr>
                         </tfoot>
                     </table>
                 </center>
+                
                 <?php echo "*" . $warning ?>
                 <center id="signature" style="display: none;">
+               
+                <?php echo "<br><nav style='margin-left:20px;'>ราคาประมาณ&nbsp;&nbsp;&nbsp; <script>document.write(d_mintotal)</script>- <script>document.write(d_maxtotal)</script>&nbsp;&nbsp;บาท</nav><br>" ?>
+    
+                <table class="table table-borderless w-100 mt-5">
 
-                    <table class="table table-borderless w-100 mt-5">
                         <tbody>
 
                             <tr>
