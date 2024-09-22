@@ -15,8 +15,6 @@ if (isset($_POST['import'])) {
         $tmp_name = $_FILES["fileload"]["name"];
         $path = $_FILES["fileload"]["tmp_name"];
         $setid = $_POST['importset'];
-        echo 'ที่อยู่ ='.$path;
-        echo '&nbsp;ชื่อไฟล์ ='.$tmp_name;
         $loader = $reader->load($path);
         $sheet = $loader->getSheet(0);
         $row_length = $sheet->getHighestRow();
@@ -138,7 +136,7 @@ function update_item($item_code, $item_name, $item_category, $item_unit, $item_u
     ,item_unitprice='" . $item_unit . "'
     ,item_uc_price='" . $item_uc . "'
     ,item_ofc_price='" . $item_ofc . "'
-    ,item_ofc_price='" . $item_ss . "'
+    ,item_ss_price='" . $item_ss . "'
     WHERE item_code = '" . $item_code . "'";
 
         if (mysqli_query($conn, $updatesql)) {
