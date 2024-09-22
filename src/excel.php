@@ -12,77 +12,83 @@ session_start();
 if (isset($_POST['import'])) {
     if ($_FILES["fileload"]["error"] >= 0) {
         $reader = IOFactory::createReader('Xlsx');
-        $tmp_name = $_FILES["fileload"]["name"];
+        $name = $_FILES["fileload"]["name"];
         $path = $_FILES["fileload"]["tmp_name"];
         $setid = $_POST['importset'];
-        $loader = $reader->load($path);
-        $sheet = $loader->getSheet(0);
-        $row_length = $sheet->getHighestRow();
-        $col_length = $sheet->getHighestColumn();
-        $data = $sheet->toArray();
-        $json = [];
-        $checker1 = $data[0][0];
-        $checker2 = $data[0][1];
+        $newpath = "excel\\load\\" . $name;
+        if (move_uploaded_file($path, $newpath)) {
+            $loader = $reader->load($newpath);
+            $sheet = $loader->getSheet(0);
+            $row_length = $sheet->getHighestRow();
+            $col_length = $sheet->getHighestColumn();
+            $data = $sheet->toArray();
+            $json = [];
+            $checker1 = $data[0][0];
+            $checker2 = $data[0][1];
 
-        if (is_int(intval(substr($checker1, 0, 5))) == true) {
-            if (intval(substr($checker1, 5, 4))) {
-                echo "<br>" . $checker1 . "=" . substr($checker1, 0, 5) . "<br>";
+            if (is_int(intval(substr($checker1, 0, 5))) == true) {
+                if (intval(substr($checker1, 5, 4))) {
+                    echo "<br>" . $checker1 . "=" . substr($checker1, 0, 5) . "<br>";
 
-                /*  echo $checker1."///".$checker2;
+                    /*  echo $checker1."///".$checker2;
                  echo "row = " . $row_length;
                 echo "col = " . count($data[0]);*/
-                for ($i = 2; $i < $row_length; $i++) {
-                    $row = [
-                        "item_code" => $data[$i][0],
-                        "item_name" => $data[$i][1],
-                        "item_category" => $data[$i][2],
-                        "item_unitprice" => $data[$i][3],
-                        "item_uc" => $data[$i][4],
-                        "item_ofc" => $data[$i][5],
-                        "item_ss" => $data[$i][6],
-                    ];
-                    array_push($json, $row);
-                }
+                    for ($i = 2; $i < $row_length; $i++) {
+                        $row = [
+                            "item_code" => $data[$i][0],
+                            "item_name" => $data[$i][1],
+                            "item_category" => $data[$i][2],
+                            "item_unitprice" => $data[$i][3],
+                            "item_uc" => $data[$i][4],
+                            "item_ofc" => $data[$i][5],
+                            "item_ss" => $data[$i][6],
+                        ];
+                        array_push($json, $row);
+                    }
 
-                $i = 0;
-                for ($i = 0; $i < count($json); $i++) {
-                    $item_code = $json[$i]['item_code'];
-                    $item_name = $json[$i]['item_name'];
-                    $item_category = $json[$i]['item_category'];
-                    $item_unit = $json[$i]['item_unitprice'];
-                    $item_uc = $json[$i]['item_uc'];
-                    $item_ofc = $json[$i]['item_ofc'];
-                    $item_ss = $json[$i]['item_ss'];
-                    if (is_numeric($item_uc) == false) {
-                        $item_uc = 0;
-                    }
-                    if (is_numeric($item_ofc) == false) {
-                        $item_ofc = 0;
-                    }
-                    if (is_numeric($item_ss) == false) {
-                        $item_ss = 0;
-                    }
-                    $fsql = "SELECT count(item_code) as c_item FROM item WHERE item_code = '$item_code'";
+                    $i = 0;
+                    for ($i = 0; $i < count($json); $i++) {
+                        $item_code = $json[$i]['item_code'];
+                        $item_name = $json[$i]['item_name'];
+                        $item_category = $json[$i]['item_category'];
+                        $item_unit = $json[$i]['item_unitprice'];
+                        $item_uc = $json[$i]['item_uc'];
+                        $item_ofc = $json[$i]['item_ofc'];
+                        $item_ss = $json[$i]['item_ss'];
+                        if (is_numeric($item_uc) == false) {
+                            $item_uc = 0;
+                        }
+                        if (is_numeric($item_ofc) == false) {
+                            $item_ofc = 0;
+                        }
+                        if (is_numeric($item_ss) == false) {
+                            $item_ss = 0;
+                        }
+                        $fsql = "SELECT count(item_code) as c_item FROM item WHERE item_code = '$item_code'";
 
-                    $r = mysqli_fetch_assoc(mysqli_query($conn, $fsql));
-                    if ($r['c_item'] < 1) {
-                        add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
+                        $r = mysqli_fetch_assoc(mysqli_query($conn, $fsql));
+                        if ($r['c_item'] < 1) {
+                            add_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
+                        } else {
+                            update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
+                        }
+                        add_set($setid, $item_code, $conn);
+                    }
+                    if ($i == count($json)) {
+                        unlink($newpath);
+                        header("location:setmanager.php?id=" . $setid);
                     } else {
-                        update_item($item_code, $item_name, $item_category, $item_unit, $item_uc, $item_ofc, $item_ss, $conn);
+                        unlink($newpath);
+                        echo $_FILES["fileload"]["error"];
                     }
-                    add_set($setid, $item_code, $conn);
-                }
-                if ($i == count($json)) {
-                    echo "<br>complete";
-                    header("location:setmanager.php?id=" . $setid);
                 } else {
-                    echo $_FILES["fileload"]["error"];
+                    unlink($newpath);
+                    header("location:setmanager.php?er=true");
                 }
-            }else {
+            } else {
+                unlink($newpath);
                 header("location:setmanager.php?er=true");
             }
-        } else {
-            header("location:setmanager.php?er=true");
         }
     }
 }
