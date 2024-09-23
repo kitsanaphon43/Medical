@@ -280,9 +280,19 @@ if (isset($_GET['key']) && isset($_GET['doc_id'])) {
     mysqli_query($conn, $updoc);
 }
 if (isset($_POST["hn_btn"])) {
-    $_SESSION['HN'] = $_POST["hn"];
-    echo $_SESSION['HN'];
-    header("Location:index.php");
+    $hn_sql = "SELECT COUNT(*) as 'chn' FROM `visit` WHERE `HN_id` = '" .$_POST["hn"]."'";
+    if($row = mysqli_fetch_array(mysqli_query($conn, $hn_sql))){
+       if( $row['chn'] > 0){
+        $_SESSION['HN'] = $_POST["hn"];
+        header("Location:index.php");
+       }else{
+        header("Location:index.php");
+       }
+    }else{
+         header("Location:index.php");
+    }
+    
+    
 }
 if (isset($_GET["name"]) && isset($_GET["cost"]) && isset($_GET["type"])) {
     $name = htmlentities($_GET["name"]);

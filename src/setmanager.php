@@ -237,18 +237,13 @@ if (isset($_GET['id'])) {
               <div class="col-md-6">
                 <a class="btn btn-outline-success btn-lg w-100" data-bs-toggle="modal" data-bs-target="#modalId">เพิ่มชุดผ่าตัดใหม่</a>
               </div>
-
               <div class="col-md-6">
-                <a class="btn  btn-outline-primary  btn-lg w-100" href="items.php">เพิ่มหัตถการ</a>
-              </div>
-
-              <div class="col-md-6">
-                <a class="btn btn-outline-secondary btn-lg w-100" href="excel/sheets/OR-items.xlsx" style="margin-top: 20px;" download>ดาวน์โหลดแบบฟอร์ม</a>
+                  <a class="btn btn-outline-secondary btn-lg w-100" href="excel/sheets/OR-items.xlsx"  download>ดาวน์โหลดแบบฟอร์ม</a>
               </div>
               <div class="col-md-6">
                 <a class="btn btn-danger btn-lg w-100" style="margin-top: 20px;" onclick="delRow()"> ลบรายการ</a>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <a class="btn btn-success btn-lg w-100" style="margin-top: 20px;" onclick="editItemSet()">บันทึกการเปลี่ยนแปลง</a>
               </div>
             </div>
@@ -284,7 +279,6 @@ if (isset($_GET['id'])) {
                   <th scope="col" style="width:10%;">ราคา/ชิ้น</th>
                   <th scope="col" style="width:10%;">ราคา</th>
                   <th scope="col" style="width:15%;">สิทธิ์</th>
-
                 </tr>
 
               </thead>
@@ -293,7 +287,6 @@ if (isset($_GET['id'])) {
               <tfoot>
                 <tr>
                   <th colspan="3"> </th>
-
                   <th style="text-align: right;" colspan="2">ทั้งหมด</th>
                   <th id="showtotal" style="text-align: center;"></th>
                   <th>บาท</th>
