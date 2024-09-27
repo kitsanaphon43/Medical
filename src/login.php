@@ -43,6 +43,8 @@ if(!empty($_SESSION['fname'])){ echo $_SESSION['fname']; header('location:index.
                                 <br>
                                
                                     <input type="submit" name="login" value="เข้าสู่ระบบ" class="btn btn-outline-primary w-50" style="margin-top: 20px;">
+                                   <hr width="20%">
+                                    <a href="register.php" class="btn btn-success w-50">สมัครบัญชีใหม่</a>
                                  <?php
                                     if (isset($_GET['t'])) {
                                         echo "<nav style='color:red;'>กรุณาใส่ชื่อผู้ใช้งานหรือรหัสผ่านให้ถูกต้อง</nav>";

@@ -119,7 +119,7 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <?php if ($_SESSION['level'] == 'admin') { ?>
+                        <?php if ($_SESSION['level'] == 'admin' || $_SESSION['level'] == 'superadmin') { ?>
                             <center>
                                 <hr style="width:100px;">
                             </center>

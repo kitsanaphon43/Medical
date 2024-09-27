@@ -5,27 +5,27 @@
 include("connect.php");
 session_start();
 
-if (empty($_SESSION['fname'])) {
+/*if (empty($_SESSION['fname'])) {
     echo $_SESSION['fname'];
     header("location:login.php");
-}
+}*/
 if (isset($_GET['editu'])) {
     $editu = $_GET['editu'];
     $get_pv = "SELECT * FROM users WHERE user_id ='" . $editu . "'";
     if ($rs = mysqli_query($conn, $get_pv)) {
         while ($row = mysqli_fetch_array($rs)) {
-             $user_fname = $row['user_fname'];
-             $user_lname = $row['user_lname'];
-             $user_engfull = $row['user_engfull'];
-             $user_englast = $row['user_englast'];
-              $user_mail = $row['user_mail'];
-              $user_phone = $row['user_phone'];
-              $job =  $row['job'] 
-              ?>
+            $user_fname = $row['user_fname'];
+            $user_lname = $row['user_lname'];
+            $user_engfull = $row['user_engfull'];
+            $user_englast = $row['user_englast'];
+            $user_mail = $row['user_mail'];
+            $user_phone = $row['user_phone'];
+            $job =  $row['job']
+?>
             <script>
                 var user_id = '<?php echo $row['user_id'] ?>';
                 var user_pre = '<?php echo $row['user_pre'] ?>';
-                var user_bday ='<?php echo $row['user_bday'] ?>';
+                var user_bday = '<?php echo $row['user_bday'] ?>';
             </script>
 <?php
 
@@ -52,6 +52,10 @@ if (isset($_GET['editu'])) {
 
 </head>
 <style>
+    body {
+        background-color: antiquewhite;
+    }
+
     .d_analyse {
         color: black;
         text-decoration: none;
@@ -69,189 +73,144 @@ if (isset($_GET['editu'])) {
 
 
 <body style="font-family: 'Noto Sans Thai', sans-serif; ">
-    <nav class="navbar navbar-expand-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><b>ระบบประเมินค่ารักษาพยาบาล</b></a>
-            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavId">
-                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-
-                </ul>
-                <form class="d-flex my-2 my-lg-0">
-                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                            <a class="dropdown-item ditem" href="register.php?editu=<?php  echo $_SESSION['user_id']; ?>">แก้ไขข้อมูลส่วนตัว</a>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <a href="newpath.php?logout=<?php echo time() ?>" class=" btn my-2 my-sm-0" id="Logout">
-                        ออกจากระบบ
-                    </a>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-
-    <div class="container-fluid">
+    <div class="container">
 
         <div id="tablezone">
             <div class="row">
 
                 <!---->
                 <!--Estimate Table-->
-                <div class="col-md-2" id="menu">
-                    <div class="row">
-                        <a href="index.php" class="choosed">
-                            <div class="col-md-12 ">
-                                หน้าแรก
-                            </div>
-                        </a>
-                        <a href="estimate.php" class="choosed">
-                            <div class="col-md-12 ">
-                                เพิ่มใบประเมินราคา
-                            </div>
-                        </a>
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="card w-100 mt-5 w-75">
 
-                        <a href="appraisal.php" class="disabled">
-                            <div class="col-md-12 choosed">
-                                พิมพ์ใบประเมินราคา
-                            </div>
-                        </a>
+                        <div class="card-body">
 
-                        <a href="setmanager.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการชุดผ่าตัด
-                            </div>
-                        </a>
-                        <a href="lab_xray.php" class="choosed">
-                            <div class="col-md-12 ">
-                                จัดการชุดแล็ปและเอกซเรย์
-                            </div>
-                        </a>
-                        <?php if ($_SESSION['level'] == 'admin') { ?>
-                            <center>
-                                <hr style="width:100px;">
-                            </center>
-                            <a href="access.php" class="now">
-                                <div class="col-md-12 ">
-                                    จัดการสิทธิการเข้าถึง
+                            <br>
+                            <div class="row">
+                                <center>
+                                    <div class="col-md-12 mb-4">
+                                        <h2>สมัครบัญชีใหม่</h2>
+                                    </div>
+                                </center>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <nav>คำนำหน้า</nav><select name="" class="form-select mb-2" id="callname">
+                                        <option value="นาย" selected>นาย</option>
+                                        <option value="นาง">นาง</option>
+                                        <option value="นางสาว">นางสาว</option>
+                                    </select>
                                 </div>
-                            </a>
-                            <a href="privilege.php" class="choosed">
-                                <div class="col-md-12 ">
-                                เกณฑ์การใช้สิทธิการรักษา
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">
+                                    <nav>ชื่อ</nav><input type="text" id="fullname" class="form-control" value="<?php if (!empty($user_fname)) {
+                                                                                                                    echo $user_fname;
+                                                                                                                } ?>">
                                 </div>
-                            </a>
-                        <?php } ?>
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <br>
-                    <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2">
-                            <nav>คำนำหน้า</nav><select name="" class="form-select" id="callname">
-                                <option value="นาย" selected>นาย</option>
-                                <option value="นาง">นาง</option>
-                                <option value="นางสาว">นางสาว</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <nav>ชื่อ</nav><input type="text" id="fullname" class="form-control"  value="<?php if(!empty($user_fname)){echo $user_fname;}?>" >
-                        </div>
-                        <div class="col-md-3">
-                            <nav>นามสกุล</nav><input type="text" id="lastname" class="form-control" value="<?php if(!empty($user_lname)){echo $user_lname;}?>">
-                        </div>
+                                <div class="col-md-4">
+                                    <nav>นามสกุล</nav><input type="text" id="lastname" class="form-control" value="<?php if (!empty($user_lname)) {
+                                                                                                                        echo $user_lname;
+                                                                                                                    } ?>">
+                                </div>
 
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
 
-                        <div class="col-md-4">
-                            <nav>firstname</nav><input type="text" id="engfull" class="form-control"  value="<?php if(!empty($user_engfull)){echo $user_engfull;}?>" >
-                        </div>
-                        <div class="col-md-4">
-                            <nav>lastname</nav><input type="text" id="englast" class="form-control"  value="<?php if(!empty($user_englast)){echo $user_englast;}?>" >
-                        </div>
+                                <div class="col-md-4">
+                                    <nav>firstname</nav><input type="text" id="engfull" class="form-control" value="<?php if (!empty($user_engfull)) {
+                                                                                                                        echo $user_engfull;
+                                                                                                                    } ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <nav>lastname</nav><input type="text" id="englast" class="form-control" value="<?php if (!empty($user_englast)) {
+                                                                                                                        echo $user_englast;
+                                                                                                                    } ?>">
+                                </div>
 
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
 
-                        <div class="col-md-4">
-                            <nav>e-mail</nav><input type="email" id="mail" class="form-control" value="<?php if(!empty($user_mail)){echo $user_mail;}?>">
-                        </div>
-                        <div class="col-md-4">
-                            <nav>เบอร์โทรศัทพ์</nav><input type="text" id="phone" class="form-control" value="<?php if(!empty($user_phone)){echo $user_phone;}?>">
-                        </div>
+                                <div class="col-md-4">
+                                    <nav>e-mail</nav><input type="email" id="mail" class="form-control" value="<?php if (!empty($user_mail)) {
+                                                                                                                    echo $user_mail;
+                                                                                                                } ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <nav>เบอร์โทรศัทพ์</nav><input type="text" id="phone" class="form-control" value="<?php if (!empty($user_phone)) {
+                                                                                                                            echo $user_phone;
+                                                                                                                        } ?>">
+                                </div>
 
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
 
-                        <div class="col-md-4">
-                            <nav>วันเกิด</nav><input type="date" id="bday" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <nav>ตำแหน่งงาน</nav><input type="text" id="job" class="form-control" value="<?php if(!empty($job)){echo $job;}?>">
-                        </div>
+                                <div class="col-md-4">
+                                    <nav>วันเกิด</nav><input type="date" id="bday" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <nav>ตำแหน่งงาน</nav><input type="text" id="job" class="form-control" value="<?php if (!empty($job)) {
+                                                                                                                        echo $job;
+                                                                                                                    } ?>">
+                                </div>
 
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
-                           <?php 
-                            if(empty($_GET['editu'])){
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <?php
+                                if (empty($_GET['editu'])) {
                                 ?>
-                          
-                        <div class="col-md-2">
-                            <nav>ชื่อผู้ใช้งาน</nav><input type="text" id="username" class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <nav>สิทธิการเข้าถึง</nav>
-                            <select name="setlevel" id="setlevel" class="form-select">
-                                <option value="user" selected>user</option>
-                                <option value="admin">admin</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <nav>รหัสผ่าน</nav><input type="password" id="passwd" class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <nav>ยืนยันรหัสผ่าน</nav><input type="password" id="c_passwd" class="form-control">
-                        </div>
 
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
-                   <?php 
-                 }
-                    ?>
-                        <div class="col-md-4">
-                            <?php
-                            if (isset($_GET['editu'])) {
-                            ?>
-                                <button onclick="update_data()" class="btn btn-outline-warning mt-3 w-100" id="">แก้ไขข้อมูล</button>
-                            <?php
-                            } else {
-                            ?>
-                                <button onclick="checkinfo()" class="btn btn-outline-success mt-3 w-100" id="">เพิ่มบัญชี</button>
-                            <?php
-                            }
-                            ?>
+                                    <!--<div class="col-md-2">
+                                        <nav>ชื่อผู้ใช้งาน</nav><input type="text" id="username" class="form-control">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <nav>สิทธิการเข้าถึง</nav>
+                                        <select name="setlevel" id="setlevel" class="form-select">
+                                            <option value="user" selected>user</option>
+                                            <option value="admin">admin</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <nav>รหัสผ่าน</nav><input type="password" id="passwd" class="form-control">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <nav>ยืนยันรหัสผ่าน</nav><input type="password" id="c_passwd" class="form-control">
+                                    </div>--->
 
-                            <nav style="color:red" name="noticfity"></nav>
-                        </div>
-                        <div class="col-md-4">
-                            <a class="btn btn-info w-100 mt-3" href="register.php">รีเซ็ต</a>
-                        </div>
+                                <?php
+                                }
+                                ?>
+                                <div class="col-md-4">
+                                    <?php
+                                    if (isset($_GET['editu'])) {
+                                    ?>
+                                        <button onclick="update_data()" class="btn btn-warning mt-3 w-100" id="">แก้ไขข้อมูล</button>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <button onclick="checkinfo()" class="btn btn-success mt-3 w-100" id="">ยันยันขอเปิดบัญชี</button>
+                                    <?php
+                                    }
+                                    ?>
 
-                        <div class="col-md-2"></div>
+                                    <nav style="color:red" name="noticfity"></nav>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-info w-100 mt-3" href="register.php">รีเซ็ต</a>
+                                </div>
+
+                                <div class="col-md-2"></div>
+                            </div>
+
+
+
+                        </div>
                     </div>
 
-
                 </div>
+                <div class="col-md-2"></div>
+
+
 
 
             </div>
@@ -276,7 +235,7 @@ if (isset($_GET['editu'])) {
         <script src="https://unpkg.com/tippy.js@6"></script>
 </body>
 <script>
-      if(user_id){
+    if (user_id) {
         getvalue();
     }
     var counter = 0;
@@ -356,21 +315,23 @@ if (isset($_GET['editu'])) {
             //alarm.setAttribute("style", "borderColor:#FFAAAA;borderWidth = 2px");
         }
     }
+
     function getvalue() {
-        if(user_id){
+        if (user_id) {
             pre_select = document.getElementById("callname");
             pre_op = pre_select.querySelectorAll("option");
             for (var i = 0; i < pre_op.length; i++) {
-                console.log(pre_op[i].value+":"+user_pre);
+                console.log(pre_op[i].value + ":" + user_pre);
                 if (pre_op[i].value == user_pre) {
                     pre_op[i].selected = true;
-                 
-                } 
+
+                }
             }
             var bday = document.getElementById("bday");
             bday.value = user_bday;
         }
     }
+
     function update_data() {
         counter = 0;
         let fullname = $('#fullname').val();
@@ -393,42 +354,42 @@ if (isset($_GET['editu'])) {
         checker(phone, 'phone');
         checker(email, 'mail');
         checker(job, 'job');
-        if(counter == 8){
+        if (counter == 8) {
             var up_json = {
-                    "uid": user_id,
-                    "fullname": fullname,
-                    "lastname": lastname,
-                    "engfull": engfull,
-                    "englast": englast,
-                    "bday": bday,
-                    "phone": phone,
-                    "email": email,
-                    "job": job,
-                    "callname": callname,
-                };
-                console.log(up_json);
-                up_json = JSON.stringify(up_json);
-                var httpup = new XMLHttpRequest();
-                var url = 'newpath.php';
-                var params = 'update=' + up_json;
-                httpup.open('POST', url, true);
+                "uid": user_id,
+                "fullname": fullname,
+                "lastname": lastname,
+                "engfull": engfull,
+                "englast": englast,
+                "bday": bday,
+                "phone": phone,
+                "email": email,
+                "job": job,
+                "callname": callname,
+            };
+            console.log(up_json);
+            up_json = JSON.stringify(up_json);
+            var httpup = new XMLHttpRequest();
+            var url = 'newpath.php';
+            var params = 'update=' + up_json;
+            httpup.open('POST', url, true);
 
-                //Send the proper header information along with the request
-                httpup.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            //Send the proper header information along with the request
+            httpup.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-                httpup.onreadystatechange = function() { //Call a function when the state changes.
-                    if (httpup.readyState == 4 && httpup.status == 200) {
-                        console.log(httpup.responseText);
-                        
-                        if(httpup.responseText == 1){
-                            window.location.href="access.php";
-                        }
+            httpup.onreadystatechange = function() { //Call a function when the state changes.
+                if (httpup.readyState == 4 && httpup.status == 200) {
+                    console.log(httpup.responseText);
+
+                    if (httpup.responseText == 1) {
+                        window.location.href = "access.php";
                     }
                 }
-                httpup.send(params);
-        }else{
+            }
+            httpup.send(params);
+        } else {
             console.log(counter);
-            
+
         }
     }
 </script>

@@ -121,7 +121,7 @@ if (!empty($_SESSION['HN'])) {
                                 จัดการชุดแล็ปและเอกซเรย์
                             </div>
                         </a>
-                        <?php if ($_SESSION['level'] == 'admin') { ?>
+                        <?php if ($_SESSION['level'] == 'admin' || $_SESSION['level'] == 'superadmin' ) { ?>
                             <center>
                                 <hr style="width:100px;">
                             </center>
@@ -172,6 +172,9 @@ if (!empty($_SESSION['HN'])) {
                                                 <option value="admin" <?php if ($row['level'] == 'admin') {
                                                                             echo 'selected';
                                                                         } ?>>admin</option>
+                                                <option value="superadmin" <?php if ($row['level'] == 'superadmin') {
+                                                                            echo 'selected';
+                                                                        } ?>>super admin</option>
 
                                             </select>
                                         </td>
